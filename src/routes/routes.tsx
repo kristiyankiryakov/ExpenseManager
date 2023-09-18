@@ -1,21 +1,35 @@
-import {Link} from "react-router-dom";
-import Home from "../Components/Home";
+/* eslint-disable react-refresh/only-export-components */
 import {Outlet, Route, createBrowserRouter, createRoutesFromElements} from "react-router-dom";
+import Home from "../Components/Home";
+import {Link} from "react-router-dom";
+import {AiOutlineHome} from "react-icons/ai";
+import { IoIosAddCircleOutline } from "react-icons/io";
+import AddExpense from "../Components/AddExpense";
+
+const gradient = "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500";
 
 const Root = () => {
-    return <>
+    return <div className="flex flex-col h-screen justify-between bg-slate-900 ">
         <Outlet />
-        {/* change to nav component */}
-        <div>
-            <Link to="/" >Home</Link>
-        </div>
-    </>
+
+        <nav>
+            <div className={`flex bg-green-500 p-2 w-full justify-around rounded-t-xl`}>
+                <Link to="/"  ><AiOutlineHome size={30} color={"white"} /></Link>
+                <Link to="/add" ><IoIosAddCircleOutline size={32} color={"white"} /></Link>
+                <AiOutlineHome size={30} color={"white"} />
+                <AiOutlineHome size={30} color={"white"} />
+            </div>
+        </nav>
+    </div>
+
+
 }
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Root />} >
             <Route index element={<Home />} />
+            <Route path="/add" element={<AddExpense />} />
         </Route>
     )
 )

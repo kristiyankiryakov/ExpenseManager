@@ -2,11 +2,13 @@ import IncomeVsExpenses from './IncomeVsExpenses'
 
 const Home = () => {
     return (
-        <main className='d-flex flex-col'>
-            <header className='h-36 bg-red-500'>
-                Welcome, section
-            </header>
-            <IncomeVsExpenses />
+        <main>
+            <div>
+                <header className='h-36 text-white'>
+                    <p>Welcome, section</p>
+                </header>
+                <IncomeVsExpenses />
+            </div>
         </main>
     )
 }
