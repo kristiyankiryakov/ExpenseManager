@@ -1,32 +1,18 @@
-import {useEffect, useState} from "react";
+import { useState} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
 
     const [userData, setUserData] = useState({username: '', password: ''});
-
+    const navigate = useNavigate();
     const login = async () => {
         const result = await axios.post('http://localhost:3500/auth', userData)
         const token = result.data.accessToken;
-        console.log(token)
         Cookies.set('jwtToken', token, {expires: 2});
+        navigate('/');
     }
-
-    // useEffect(() => {
-    //     const jwtToken = Cookies.get('jwtToken');
-    //     const axiosInstance = axios.create({
-    //         baseURL: 'http://localhost:3500',
-    //         headers: {
-    //             'Authorization': `Bearer ${jwtToken}`,
-    //         },
-    //     });
-
-    //     (async () => {
-    //         const result = await axiosInstance.get('/users');
-    //         console.log(result.data);
-    //     })()
-    // }, [])
 
     return (
         <div>
@@ -53,7 +39,7 @@ const Login = () => {
                             </div>
                             <button onClick={() => login()} type="submit" className="w-full bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                Don’t have an account yet? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
+                                Don’t have an account yet? <a onClick={() => navigate('/register')} className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
                             </p>
                         </div>
                     </div>

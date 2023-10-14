@@ -7,6 +7,7 @@ import {IoIosAddCircleOutline} from "react-icons/io";
 import AddExpense from "../Components/AddExpense";
 import Login from "../Components/Login";
 import Protected from "../Components/Protected";
+import Register from "../Components/Register";
 
 const Root = () => {
     return <div className="flex flex-col h-screen justify-between bg-slate-900 ">
@@ -28,9 +29,10 @@ const Root = () => {
 export const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Root />} >
-            <Route index element={<Home />} />
+            <Route index element={<Protected><Home /></Protected>} />
             <Route path="/add" element={<Protected><AddExpense /></Protected>} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
         </Route>
     )
