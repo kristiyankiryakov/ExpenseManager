@@ -1,5 +1,4 @@
-import User from "../models/User";
-// const Note = require('../models/Note')
+import User from "../models/User.js";
 import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
 
@@ -72,7 +71,7 @@ const updateUser = asyncHandler(async (req, res) => {
     // Check for duplicate 
     const duplicate = await User.findOne({ username }).lean().exec()
 
-    // Allow updates to the original user 
+    // Allow updates to the original; user 
     if (duplicate && duplicate?._id.toString() !== id) {
         return res.status(409).json({ message: 'Duplicate username' })
     }
@@ -101,12 +100,6 @@ const deleteUser = asyncHandler(async (req, res) => {
     if (!id) {
         return res.status(400).json({ message: 'User ID Required' })
     }
-
-    // Does the user still have assigned notes?
-    // const note = await Note.findOne({ user: id }).lean().exec()
-    // if (note) {
-    //     return res.status(400).json({ message: 'User has assigned notes' })
-    // }
 
     // Does the user exist to delete?
     const user = await User.findById(id).exec()

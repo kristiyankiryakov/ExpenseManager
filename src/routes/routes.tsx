@@ -3,8 +3,10 @@ import {Outlet, Route, createBrowserRouter, createRoutesFromElements} from "reac
 import Home from "../Components/Home";
 import {Link} from "react-router-dom";
 import {AiOutlineHome} from "react-icons/ai";
-import { IoIosAddCircleOutline } from "react-icons/io";
+import {IoIosAddCircleOutline} from "react-icons/io";
 import AddExpense from "../Components/AddExpense";
+import Login from "../Components/Login";
+import Protected from "../Components/Protected";
 
 const Root = () => {
     return <div className="flex flex-col h-screen justify-between bg-slate-900 ">
@@ -27,7 +29,9 @@ export const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Root />} >
             <Route index element={<Home />} />
-            <Route path="/add" element={<AddExpense />} />
+            <Route path="/add" element={<Protected><AddExpense /></Protected>} />
+            <Route path="/login" element={<Login />} />
+
         </Route>
     )
 )

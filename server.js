@@ -1,7 +1,7 @@
 import { } from 'dotenv/config';
 import express from 'express';
 const app = express();
-import path from 'path';
+import { dirname, join } from 'path';
 import { logger, logEvents } from "./middleware/logger.js";
 import errorHandler from './middleware/errorHandler.js';
 import cookieParser from 'cookie-parser';
@@ -10,6 +10,9 @@ import corsOptions from "./config/corsOptions.js"
 import connectDB from './config/dbConn.js';
 import mongoose from 'mongoose';
 import root from "./routes/root.js";
+import auth from "./routes/authRoutes.js"
+import users from "./routes/userRoutes.js"
+import { fileURLToPath } from 'url';
 const PORT = process.env.PORT || 3500;
 
 connectDB()
@@ -22,18 +25,17 @@ app.use(express.json())
 
 app.use(cookieParser())
 
-// app.use('/', exprecss.static(path.join(__dirname, 'public')))
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+app.use('/', express.static(join(__dirname, 'public')));
 
 app.use('/', root)
-// app.use('/auth', require('./routes/authRoutes'))
-// app.use('/users', require('./routes/userRoutes'))
-// app.use('/notes', require('./routes/noteRoutes'))
+app.use('/auth', auth)
+app.use('/users', users)
 
 app.all('*', (req, res) => {
     res.status(404)
-    if (req.accepts('html')) {
-        res.sendFile(path.join(__dirname, 'views', '404.html'))
-    } else if (req.accepts('json')) {
+    if (req.accepts('json')) {
         res.json({ message: '404 Not Found' })
     } else {
         res.type('txt').send('404 Not Found')
