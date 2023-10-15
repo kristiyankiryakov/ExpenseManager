@@ -1,16 +1,18 @@
-import { useState} from "react";
+import {useState} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
+import {useUser} from '../context/userContext';
 
 const Login = () => {
-
+    const {setUser} = useUser();
     const [userData, setUserData] = useState({username: '', password: ''});
     const navigate = useNavigate();
     const login = async () => {
         const result = await axios.post('http://localhost:3500/auth', userData)
-        const token = result.data.accessToken;
-        Cookies.set('jwtToken', token, {expires: 2});
+        const token = result.data.refreshToken;
+        Cookies.set('jwt', token);
+        setUser(result.data.userData);
         navigate('/');
     }
 
