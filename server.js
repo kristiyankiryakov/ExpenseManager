@@ -12,6 +12,7 @@ import mongoose from 'mongoose';
 import root from "./routes/root.js";
 import auth from "./routes/authRoutes.js"
 import users from "./routes/userRoutes.js"
+import expense from "./routes/expenseRoutes.js"
 import { fileURLToPath } from 'url';
 const PORT = process.env.PORT || 3500;
 
@@ -32,6 +33,7 @@ app.use('/', express.static(join(__dirname, 'public')));
 app.use('/', root)
 app.use('/auth', auth)
 app.use('/users', users)
+app.use('/expense', expense)
 
 app.all('*', (req, res) => {
     res.status(404)
