@@ -2,12 +2,17 @@
 import {RouterProvider} from "react-router-dom";
 import './App.css';
 import {router} from "./routes/routes.tsx";
+import {DarkThemeToggle, Flowbite} from 'flowbite-react';
+import 'flowbite';
 
 function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
+      {/* <Flowbite> */}
+        {/* <DarkThemeToggle /> */}
+        <RouterProvider router={router} />
+      {/* </Flowbite> */}
     </>
   )
 }
