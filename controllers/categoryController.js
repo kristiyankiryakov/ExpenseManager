@@ -3,12 +3,12 @@ import Category from "../models/Category.js";
 
 const createCategory = asyncHandler(async (req, res) => {
 
-    const { userData = null, categoryName } = req.body;
+    const { user = null, categoryName } = req.body;
 
     try {
         const category = new Category({
             name: categoryName,
-            user: userData ? userData._id : null,
+            user: user ? user._id : null,
         });
         const newCategory = await category.save();
 
