@@ -1,4 +1,4 @@
-import {useEffect, useState, } from "react"
+import {useEffect, useRef, useState, } from "react"
 import {BiDollar, BiCategory} from "react-icons/bi";
 import {icons} from "../helpers/icons.tsx";
 import {AiOutlineAppstoreAdd} from "react-icons/ai";
@@ -10,12 +10,11 @@ import Expense from "../interfaces/Expense.ts";
 // import {toast} from "react-toastify";
 
 import {Modal, Datepicker, Button} from 'flowbite-react';
-
-
+import moment from "moment";
 
 const AddExpense = () => {
     const {user} = useUser();
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState<moment.Moment | Date>(moment());
     const [selectedCategory, setSelectedCategory] = useState<null | number>(null);
     const [amount, setAmount] = useState(5);
     const [filter, setFilter] = useState("");
@@ -25,14 +24,14 @@ const AddExpense = () => {
     const [dailyExpenses, setDailyExpenses] = useState<null | Expense[]>(null)
 
     const addExpense = async () => {
-        console.log(selectedCategory)
-        console.log(selectedDate);
-        console.log(userCategories)
+
         if (typeof selectedCategory === 'number' && selectedDate && userCategories) {
-            const payload = {user: user, date: selectedDate, amount, category: userCategories[selectedCategory].name, description: 'asd'}
+            setSelectedDate(current => moment(current));
+            const payload = {user: user, date: selectedDate, amount, category: userCategories[selectedCategory].name}
             await axiosInstance.post('/expense', payload);
             await getUserExpenses(Period.DAY);
             setSelectedCategory(null);
+
         } else {
             console.log("SELECT")
         }
@@ -122,12 +121,11 @@ const AddExpense = () => {
 
             <section className="w-[95%] mx-auto" >
                 <button onClick={addExpense} type="button" className="w-full text-white bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-800 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add</button>            {/* </section> */}
-                <p className="text-center text-white" >Your Daily Expenses Will Display below.</p>
-
             </section>
 
             <section className="mb-4 w-full mx-auto h-60 max-h-80 overflow-y-auto" >
                 {/* Single expense */}
+                <p className="text-right text-white pr-3">Daily Expneses:</p>
                 {dailyExpenses && dailyExpenses.map((expense, i) => {
                     const date = new Date(expense.date);
                     const hours = date.getHours();
