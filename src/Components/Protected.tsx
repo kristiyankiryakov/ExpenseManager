@@ -19,7 +19,6 @@ const Protected = ({children}: Props) => {
     } else if (token) {
         (async () => {
             const result = await axios.get('http://localhost:3500/auth/refresh', {headers: {'Authorization': `Bearer ${token}`}, withCredentials: true});
-            console.log(result);
             setUser(result.data.userData);
         })();
     } else {

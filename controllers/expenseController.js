@@ -36,6 +36,13 @@ const getUserExpenses = asyncHandler(async (req, res) => {
     startDate.setDate(startDate.getDate() - 7); // Expenses for the last week
   } else if (period === 'month') {
     startDate.setMonth(startDate.getMonth() - 1); // Expenses for the last month
+  } else if (!period) {
+    try {
+      const allExpenses = await Expense.find({ user: userId });
+      return res.status(200).json(allExpenses);
+    } catch (error) {
+      return res.status(400).json({ message: 'Error retrieving all expenses:', error });
+    }
   } else {
     return res.status(400).json({ message: `Invalid period provided: ${period}` });
   }
