@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 import {useUser} from '../context/userContext';
 import Expense from '../interfaces/Expense';
 import {axiosInstance} from '../helpers/axios';
-import {icons} from '../helpers/icons';
+import {getIcon} from '../helpers/icons';
 
 interface data {label: string, value: number, color: string}
 
@@ -36,7 +36,7 @@ const Details = () => {
     const [expenses, setExpenses] = useState<null | Expense[]>(null);
 
     const selectPeriod = (period: Period) => {
-       setSelectedPeriod(period);
+        setSelectedPeriod(period);
     }
 
     const getUserExpenses = async (period: Period | null) => {
@@ -107,7 +107,7 @@ const Details = () => {
             </div>
 
             <section className="w-full mx-auto h-60 max-h-80 overflow-y-auto" >
-                <p className="text-right text-white pr-3">{selectedPeriod?.toLocaleUpperCase()} Expenses:</p>
+                <p className="text-right text-white pr-3">{selectedPeriod?.toUpperCase()} Expenses:</p>
                 {expenses && expenses.map((expense, i) => {
                     const date = new Date(expense.date);
                     const hours = date.getHours();
@@ -117,7 +117,7 @@ const Details = () => {
                             <div className="flex justify-between items-center px-6 mb-2 mt-1">
                                 <div className="flex space-x-4 justify-center items-center my-2" >
                                     <div className=" p-2 bg-lime-500 rounded-lg w-fit m-auto" >
-                                        <span>{icons[expense.category]}</span>
+                                        <span>{getIcon(expense.category)}</span>
                                     </div>
                                     <div className="bg-lime-900 w-fit rounded-lg px-2 m-auto" >
                                         <p className="text-center text-gray-300" >{expense.category}</p>

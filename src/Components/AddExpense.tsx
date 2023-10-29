@@ -1,6 +1,6 @@
 import {useEffect, useState, } from "react"
 import {BiDollar, BiCategory} from "react-icons/bi";
-import {icons} from "../helpers/icons.tsx";
+import {getIcon} from "../helpers/icons.tsx";
 import {AiOutlineAppstoreAdd} from "react-icons/ai";
 import {useUser} from "../context/userContext";
 import {axiosInstance} from "../helpers/axios";
@@ -93,7 +93,7 @@ const AddExpense = () => {
                         return (
                             <div onClick={() => selectCategory(i)} key={category.name} className="flex-col space-y-1 justify-center items-center my-2" >
                                 <div className={`p-2 rounded-lg w-fit m-auto ${i === selectedCategory ? 'bg-green-800' : 'bg-lime-500'}`} >
-                                    <span>{icons[category.name]}</span>
+                                    <span>{getIcon(category.name)}</span>
                                 </div>
                                 <div className="bg-lime-900 w-fit rounded-lg px-2 m-auto" >
                                     <p className="text-center text-gray-300" >{category.name}</p>
@@ -134,7 +134,7 @@ const AddExpense = () => {
                             <div className="flex justify-between items-center px-6 mb-2 mt-1">
                                 <div className="flex space-x-4 justify-center items-center my-2" >
                                     <div className=" p-2 bg-lime-500 rounded-lg w-fit m-auto" >
-                                        <span>{icons[expense.category]}</span>
+                                        <span>{getIcon(expense.category)}</span>
                                     </div>
                                     <div className="bg-lime-900 w-fit rounded-lg px-2 m-auto" >
                                         <p className="text-center text-gray-300" >{expense.category}</p>
@@ -156,7 +156,7 @@ const AddExpense = () => {
             <Modal dismissible show={openModal === 'dismissible'} onClose={() => setOpenModal(undefined)}>
                 <Modal.Header>Category Name</Modal.Header>
                 <Modal.Body  >
-                    <input onChange={(e) => setNewCategory(e.target.value)} type="text" id="small-input" className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                    <input maxLength={6} onChange={(e) => setNewCategory(e.target.value)} type="text" id="small-input" className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={addCategory}>Create</Button>
