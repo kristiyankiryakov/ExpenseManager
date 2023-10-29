@@ -1,12 +1,14 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
-const axiosInstance = axios.create({
-    baseURL: 'http://localhost:3500', // Your API base URL
-    withCredentials: true,
-    headers: {
-      'Authorization': `Bearer ${Cookies.get('jwt')}`
-    }
-  });
+export const axiosInstance = axios.create({
+  baseURL: 'http://localhost:3500',
+  withCredentials: true,
+});
 
-  export default axiosInstance;
+export function setAuthorizationToken(token: string) {
+  if (token) {
+    axiosInstance.defaults.headers.common['authorization'] = `Bearer ${token}`;
+  } else {
+    delete axiosInstance.defaults.headers.common['authorization'];
+  }
+}

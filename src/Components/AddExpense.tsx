@@ -1,9 +1,9 @@
-import {useEffect, useRef, useState, } from "react"
+import {useEffect, useState, } from "react"
 import {BiDollar, BiCategory} from "react-icons/bi";
 import {icons} from "../helpers/icons.tsx";
 import {AiOutlineAppstoreAdd} from "react-icons/ai";
 import {useUser} from "../context/userContext";
-import axiosInstance from "../helpers/axios";
+import {axiosInstance} from "../helpers/axios";
 import Category from "../interfaces/Category.ts";
 import Period from "../enums/ExpensePeriod.ts"
 import Expense from "../interfaces/Expense.ts";
@@ -24,7 +24,6 @@ const AddExpense = () => {
     const [dailyExpenses, setDailyExpenses] = useState<null | Expense[]>(null)
 
     const addExpense = async () => {
-
         if (typeof selectedCategory === 'number' && selectedDate && userCategories) {
             setSelectedDate(current => moment(current));
             const payload = {user: user, date: selectedDate, amount, category: userCategories[selectedCategory].name}
