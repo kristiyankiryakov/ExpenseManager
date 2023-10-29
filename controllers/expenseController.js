@@ -36,6 +36,8 @@ const getUserExpenses = asyncHandler(async (req, res) => {
     startDate.setDate(startDate.getDate() - 7); // Expenses for the last week
   } else if (period === 'month') {
     startDate.setMonth(startDate.getMonth() - 1); // Expenses for the last month
+  } else if (period === 'year') {
+    startDate.setFullYear(startDate.getFullYear() - 1); // Expense for the last year
   } else if (!period) {
     try {
       const allExpenses = await Expense.find({ user: userId });

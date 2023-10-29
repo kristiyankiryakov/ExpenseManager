@@ -124,7 +124,7 @@ const AddExpense = () => {
 
             <section className="mb-4 w-full mx-auto h-60 max-h-80 overflow-y-auto" >
                 {/* Single expense */}
-                <p className="text-right text-white pr-3">Daily Expneses:</p>
+                <p className="text-right text-white pr-3">Daily Expenses:</p>
                 {dailyExpenses && dailyExpenses.map((expense, i) => {
                     const date = new Date(expense.date);
                     const hours = date.getHours();

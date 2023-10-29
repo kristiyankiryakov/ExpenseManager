@@ -1,7 +1,8 @@
 enum Period {
     DAY = "day",
     WEEK = "week",
-    MONTH = "moth"
+    MONTH = "month",
+    YEAR = "year"
 }
 
 export default Period
