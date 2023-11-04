@@ -6,16 +6,16 @@ const createNewExpense = asyncHandler(async (req, res) => {
   const { user, description, amount, date, category } = req.body;
 
   try {
-    // Create a new expense document
+
     const newExpense = new Expense({
-      user: user._id, // Assuming you have user data in the form of a 'User' document
+      user: user._id,
       description: description,
       amount: amount,
       date: date,
       category: category,
     });
 
-    // Save the expense to the database
+
     const savedExpense = await newExpense.save();
 
     return res.status(200).json(savedExpense);
@@ -32,30 +32,26 @@ const getUserExpenses = asyncHandler(async (req, res) => {
   let endDate;
 
   if (period === 'day') {
-    startDate.setDate(startDate.getDate() - 1); // Expenses for the last day
+    startDate.setDate(startDate.getDate() - 1);
   } else if (period === 'week') {
-    // startDate.setDate(startDate.getDate() - 7); // Expenses for the last week
 
-    const dayOfWeek = currentDate.getDay(); // Get the current day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
-    const diff = currentDate.getDate() - dayOfWeek + (dayOfWeek === 1 ? 0 : (dayOfWeek === 0 ? -6 : 1)); // Calculate the start date (Monday)
-    startDate = new Date(currentDate.setDate(diff));
+    const currentDay = currentDate.getDay(); // 0 for Sunday, 1 for Monday, and so on
+    const diffToMonday = currentDate.getDate() - currentDay + (currentDay === 0 ? -6 : 1); // Calculate days to Monday
+  
+    startDate = new Date(currentDate.setDate(diffToMonday));
     endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + (6 - dayOfWeek + 1)); // (6 - dayOfWeek + 1) gives the remaining days till Sunday
+    endDate.setDate(startDate.getDate() + 6); // Sunday
 
   } else if (period === 'month') {
-    // startDate.setMonth(startDate.getMonth() - 1); // Expenses for the last month
     startDate.setDate(1); // Set the start date to the 1st day of the current month
 
-    // Calculate the end date (last day of the current month)
     const nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
     endDate = new Date(nextMonth - 1);
 
   } else if (period === 'year') {
-    // startDate.setFullYear(startDate.getFullYear() - 1); // Expense for the last year
-    startDate.setMonth(0); // Set the start date to the 1st day of January of the current year
+    startDate.setMonth(0);
     startDate.setDate(1);
 
-    // Calculate the end date (last day of December of the current year)
     endDate = new Date(currentDate.getFullYear(), 11, 31);
   } else if (!period) {
     try {
@@ -69,12 +65,21 @@ const getUserExpenses = asyncHandler(async (req, res) => {
   }
 
   try {
+    const period = { startDate, endDate };
     const expenses = await Expense.find({
       user: userId,
       date: { $gte: startDate, $lte: endDate ?? currentDate }, // Filter expenses within the specified period
     });
 
-    return res.status(200).json(expenses);
+    const expensesByCategory = expenses.reduce((acc, expense) => {
+      if (!acc[expense.category]) {
+        acc[expense.category] = 0;
+      }
+      acc[expense.category] += expense.amount;
+      return acc;
+    }, {});
+
+    return res.status(200).json({ expenses, expensesByCategory, period });
   } catch (error) {
     return res.status(400).json({ message: 'Error retrieving expenses:', error });
   }

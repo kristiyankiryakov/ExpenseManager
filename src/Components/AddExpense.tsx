@@ -42,7 +42,8 @@ const AddExpense = () => {
             period: period
         }
         const response = await axiosInstance.get(`/expense`, {params});
-        setDailyExpenses(response.data);
+        console.log(response)
+        setDailyExpenses(response.data.expenses);
     }
     const addCategory = async () => {
         const payload = {user: user, categoryName: newCategory}

@@ -5,6 +5,7 @@ import {useUser} from '../context/userContext';
 import Expense from '../interfaces/Expense';
 import {axiosInstance} from '../helpers/axios';
 import {getIcon} from '../helpers/icons';
+import Color from "../enums/CategoryColor.ts";
 
 interface data {label: string, value: number, color: string}
 
@@ -16,28 +17,37 @@ const data = [
 ];
 
 const sizing = {
-    height: 200,
+    height: 250,
     legend: {
         direction: "column",
         position: {vertical: 'top', horizontal: "right"},
         padding: NaN,
     }
 };
-const TOTAL = data.map((item) => item.value).reduce((a, b) => a + b, 0);
+// const TOTAL = data.map((item) => item.value).reduce((a, b) => a + b, 0);
 
-const getArcLabel = (params: data) => {
-    const percent = params.value / TOTAL;
-    return `${(percent * 100).toFixed(0)}%`;
-};
+
+// const generateRandomColor = () => {
+//     const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+//     return randomColor;
+// };
 
 const Details = () => {
     const {user} = useUser();
     const [selectedPeriod, setSelectedPeriod] = useState<Period | null>(Period.WEEK);
+    const [chartData, setChartData] = useState(data);
     const [expenses, setExpenses] = useState<null | Expense[]>(null);
-
+    const [chartPeriod, setChartPeriod] = useState("");
     const selectPeriod = (period: Period) => {
         setSelectedPeriod(period);
     }
+
+    const getArcLabel = (params: data) => {
+        if (expenses) {
+            const percent = params.value / expenses.reduce((a, b) => a + b.amount, 0);
+            return `${(percent * 100).toFixed(0)}%`;
+        }
+    };
 
     const getUserExpenses = async (period: Period | null) => {
         const params = {
@@ -45,7 +55,39 @@ const Details = () => {
             period: period
         }
         const response = await axiosInstance.get(`/expense`, {params});
-        setExpenses(response.data);
+        setExpenses(response.data.expenses)
+        const formatted = formatForChart(response.data.expensesByCategory);
+
+        setChartPeriod(formatDates(response.data.period.startDate, response.data.period.endDate))
+        setChartData(formatted);
+    }
+
+    const formatForChart = (data: {[key: string]: number}) => {
+        const modified = Object.keys(data).map((category) => {
+            return {
+                label: category,
+                value: data[category],
+                color: Color[category as typeof Color] ?? '#72ccff'
+            };
+        });
+        return modified
+    }
+
+    const formatDates = (startDate: Date, endDate: Date) => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+    
+        const startDay = start.getDate();
+        const endDay = end.getDate();
+    
+        const startMonth = start.toLocaleString('default', { month: 'short' });
+        const endMonth = end.toLocaleString('default', { month: 'short' });
+    
+        if (start.getMonth() === end.getMonth()) {
+            return `${startDay}${startMonth} - ${endDay}${endMonth} ${end.getFullYear()}`;
+        }
+    
+        return `${startDay}${startMonth} ${start.getFullYear()} - ${endDay}${endMonth} ${end.getFullYear()}`;
     }
 
     useEffect(() => {
@@ -66,13 +108,16 @@ const Details = () => {
                         <h2 className='text-2xl ' >Expenses</h2>
                         <h5 className='text-2xl text-lime-500 font-medium' >$534</h5>
                     </div>
-                    <p className='p-2 text-gray-400' >1Feb 2023 - 28Feb 2023</p>
+                    <p className='p-2 text-gray-400' >{chartPeriod}</p>
                     <div className='flex' >
                         <PieChart
                             series={[
                                 {
-                                    outerRadius: 80,
-                                    data,
+                                    innerRadius: 25,
+                                    outerRadius: 120,
+                                    paddingAngle: 10,
+                                    cornerRadius: 5,
+                                    data: chartData,
                                     arcLabel: getArcLabel,
                                 },
                             ]}
