@@ -7,21 +7,23 @@ import {axiosInstance} from "../helpers/axios";
 import Category from "../interfaces/Category.ts";
 import Period from "../enums/ExpensePeriod.ts"
 import Expense from "../interfaces/Expense.ts";
-// import {toast} from "react-toastify";
 
 import {Modal, Datepicker, Button} from 'flowbite-react';
 import moment from "moment";
 
 const AddExpense = () => {
     const {user} = useUser();
+    const [pageSwitch, setPageSwitch] = useState("Expense");
     const [selectedDate, setSelectedDate] = useState<moment.Moment | Date>(moment());
     const [selectedCategory, setSelectedCategory] = useState<null | number>(null);
-    const [amount, setAmount] = useState(5);
+    const [amount, setAmount] = useState<undefined | number>(undefined);
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();
     const [newCategory, setNewCategory] = useState("");
     const [userCategories, setUserCategories] = useState<null | Category[]>(null);
     const [dailyExpenses, setDailyExpenses] = useState<null | Expense[]>(null)
+
+    const isExpensePage = pageSwitch === "Expense"
 
     const addExpense = async () => {
         if (typeof selectedCategory === 'number' && selectedDate && userCategories) {
@@ -32,7 +34,7 @@ const AddExpense = () => {
             setSelectedCategory(null);
 
         } else {
-            console.log("SELECT")
+            console.log('set up error handling')
         }
     };
 
@@ -42,7 +44,6 @@ const AddExpense = () => {
             period: period
         }
         const response = await axiosInstance.get(`/expense`, {params});
-        console.log(response)
         setDailyExpenses(response.data.expenses);
     }
     const addCategory = async () => {
@@ -60,6 +61,10 @@ const AddExpense = () => {
         selectedCategory == index ? setSelectedCategory(null) : setSelectedCategory(index);
     }
 
+    const handleSwitchChange = () => {
+        setPageSwitch(prevSwitch => (prevSwitch === "Expense" ? "Income" : "Expense"));
+    };
+
     useEffect(() => {
         getUserExpenses(Period.DAY);
         getCategories();
@@ -69,34 +74,39 @@ const AddExpense = () => {
 
     return (
         <main className="bg-slate-900 flex flex-col h-screen justify-between">
+            {isExpensePage ?
+                <button type="button" onClick={handleSwitchChange} className="text-white bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 dark:shadow-lg dark:shadow-lime-800/80 font-medium text-sm px-5 py-2.5 text-center mb-2">{pageSwitch}</button>
+                :
+                <button type="button" onClick={handleSwitchChange} className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium text-sm px-5 py-2.5 text-center mb-2">{pageSwitch}</button>
+            }
             <div className="flex-col space-y-10" >
                 <section className="flex w-[95%] justify-around m-auto mt-10">
-                    <div className="relative w-[25%]">
+                    <div className={`relative ${isExpensePage ? 'w-[25%]' : 'w-[75%]'}`}>
                         <input min={0} value={amount} onChange={(event) => setAmount(event.target.valueAsNumber)}
-                            className={`w-full outline-none text-lg text-center bg-gray-700 p-2 rounded-xl text-stone-100 font-medium placeholder-stone-200`}
+                            className={`w-full outline-none text-lg text-center bg-gray-700 p-2 rounded-xl text-stone-300 font-medium placeholder-stone-500 focus:ring-4 focus:outline-none ${isExpensePage ? 'focus:ring-lime-500' : 'focus:ring-green-300'}`}
                             type="number" placeholder="5.99" />
                         <div className="absolute top-2.5 left-0 text-stone-300 m-0 p-0">
-                            <BiDollar size={24} />
+                            <BiDollar style={{color: isExpensePage ? '#84cc16' : '#09885e'}} size={24} />
                         </div>
                     </div>
-                    <div className="relative">
-                        <input className={`w-full bg-gray-700 outline-none text-lg text-center p-2  text-stone-100 rounded-xl placeholder-stone-200`} type="text"
+                    {isExpensePage && <div className="relative">
+                        <input className={`w-full bg-gray-700 outline-none text-lg text-center p-2  text-stone-100 rounded-xl placeholder-stone-500 focus:ring-4 focus:outline-none focus:ring-lime-500`} type="text"
                             value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Search Category" />
                         <div className="absolute top-2 left-2" >
-                            <BiCategory size={30} color="white" />
+                            <BiCategory size={30} color='#84cc16' />
                         </div>
-                    </div>
+                    </div>}
                 </section>
 
                 {/* Category Section */}
-                <div className="grid grid-cols-4 w-[95%] m-auto border border-gray-600 rounded-xl bg-slate-800 h-44 overflow-y-auto scroll-smooth" >
+                {isExpensePage && <div className="grid grid-cols-4 w-[95%] m-auto border border-gray-600 rounded-xl bg-slate-800 h-44 overflow-y-auto scroll-smooth" >
                     {userCategories && userCategories.map((category, i) => {
                         return (
                             <div onClick={() => selectCategory(i)} key={category.name} className="flex-col space-y-1 justify-center items-center my-2" >
-                                <div className={`p-2 rounded-lg w-fit m-auto ${i === selectedCategory ? 'bg-green-800' : 'bg-lime-500'}`} >
+                                <div tabIndex={0} className={`p-2 rounded-lg w-fit m-auto bg-lime-500 focus:ring-4 focus:outline-none focus:ring-lime-300`} >
                                     <span>{getIcon(category.name)}</span>
                                 </div>
-                                <div className="bg-lime-900 w-fit rounded-lg px-2 m-auto" >
+                                <div className="bg-lime-700 w-fit rounded-lg px-2 m-auto" >
                                     <p className="text-center text-gray-300" >{category.name}</p>
                                 </div>
                             </div>
@@ -112,7 +122,7 @@ const AddExpense = () => {
                             <p className="text-center text-gray-300" >Add</p>
                         </div>
                     </div>
-                </div>
+                </div>}
             </div>
 
             <section className="w-[95%] my-2 mx-auto" >
@@ -120,13 +130,17 @@ const AddExpense = () => {
             </section>
 
             <section className="w-[95%] mx-auto" >
-                <button onClick={addExpense} type="button" className="w-full text-white bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-800 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add</button>            {/* </section> */}
+                {isExpensePage ?
+                    <button onClick={addExpense} type="button" className="w-full text-white bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-800 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add</button>
+                    :
+                    <button type="button" className="w-full text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-800 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add</button>
+                }
             </section>
 
-            <section className="mb-4 w-full mx-auto h-60 max-h-80 overflow-y-auto" >
+            <section className={`mb-4 w-full mx-auto h-60 max-h-80 overflow-y-auto`} >
                 {/* Single expense */}
-                <p className="text-right text-white pr-3">Daily Expenses:</p>
-                {dailyExpenses && dailyExpenses.map((expense, i) => {
+                <p className="text-right text-white pr-3">{isExpensePage ? 'Daily Expenses:' : 'Daily Incomes:'}</p>
+                {(isExpensePage && dailyExpenses) && dailyExpenses.map((expense, i) => {
                     const date = new Date(expense.date);
                     const hours = date.getHours();
                     const minutes = date.getMinutes();
@@ -164,7 +178,6 @@ const AddExpense = () => {
                     <Button color="gray" onClick={() => setOpenModal(undefined)}>   Close</Button>
                 </Modal.Footer>
             </Modal>
-
         </main>
     )
 }
