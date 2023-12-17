@@ -1,5 +1,8 @@
 import asyncHandler from "express-async-handler";
 import Expense from "../models/Expense.js";
+// const moment = require('moment');
+import moment from 'moment';
+import mongoose from "mongoose";
 
 const createNewExpense = asyncHandler(async (req, res) => {
 
@@ -37,7 +40,7 @@ const getUserExpenses = asyncHandler(async (req, res) => {
 
     const currentDay = currentDate.getDay(); // 0 for Sunday, 1 for Monday, and so on
     const diffToMonday = currentDate.getDate() - currentDay + (currentDay === 0 ? -6 : 1); // Calculate days to Monday
-  
+
     startDate = new Date(currentDate.setDate(diffToMonday));
     endDate = new Date(startDate);
     endDate.setDate(startDate.getDate() + 6); // Sunday
@@ -85,8 +88,45 @@ const getUserExpenses = asyncHandler(async (req, res) => {
   }
 })
 
+const getExpensesByMonth = asyncHandler(async (req, res) => {
+  const currentYear = moment().year();
+  const { userId } = req.query;
+
+  try {
+    const expenses = await Expense.aggregate([
+      {
+        $match: {
+          user: new mongoose.Types.ObjectId(userId),
+          date: {
+            $gte: new Date(`${currentYear}-01-01`),
+            $lt: new Date(`${currentYear + 1}-01-01`)
+          }
+        }
+      },
+      {
+        $group: {
+          _id: { $month: "$date" },
+          totalAmount: { $sum: "$amount" }
+        }
+      }
+    ]);
+
+    const monthlyExpenses = expenses.map((item) => {
+      const monthName = moment().month(item._id - 1).format("MMM"); // Adjusted this line
+      return { month: monthName, Expense: item.totalAmount };
+    });
+
+    return res.status(200).json({ monthlyExpenses });
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({ message: 'error retrieving expenses', error });
+  }
+
+})
+
 
 export default {
   createNewExpense,
-  getUserExpenses
+  getUserExpenses,
+  getExpensesByMonth,
 }

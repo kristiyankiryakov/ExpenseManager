@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import moment from "moment";
+// import moment from "moment";
 
 const expenseSchema = new mongoose.Schema({
     user: {
@@ -28,7 +28,7 @@ const expenseSchema = new mongoose.Schema({
     // Optionally, you can use the following fields to enable time-based queries:
     created_at: {
         type: Date,
-        default: moment(),
+        default: Date.now,
     },
 });
 
