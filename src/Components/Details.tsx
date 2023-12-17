@@ -76,17 +76,17 @@ const Details = () => {
     const formatDates = (startDate: Date, endDate: Date) => {
         const start = new Date(startDate);
         const end = new Date(endDate);
-    
+
         const startDay = start.getDate();
         const endDay = end.getDate();
-    
-        const startMonth = start.toLocaleString('default', { month: 'short' });
-        const endMonth = end.toLocaleString('default', { month: 'short' });
-    
+
+        const startMonth = start.toLocaleString('default', {month: 'short'});
+        const endMonth = end.toLocaleString('default', {month: 'short'});
+
         if (start.getMonth() === end.getMonth()) {
             return `${startDay}${startMonth} - ${endDay}${endMonth} ${end.getFullYear()}`;
         }
-    
+
         return `${startDay}${startMonth} ${start.getFullYear()} - ${endDay}${endMonth} ${end.getFullYear()}`;
     }
 
@@ -144,7 +144,8 @@ const Details = () => {
                 <section className='flex justify-around' >
                     {[Period.WEEK, Period.MONTH, Period.YEAR].map((label) => {
                         return <p onClick={() => selectPeriod(label)}
-                            className={`text-sm py-2 px-4 rounded-2xl   ${selectedPeriod === label ? 'bg-green-800' : 'bg-lime-500'}`}
+                            tabIndex={0}
+                            className={`text-sm py-2 px-4 rounded-2xl bg-lime-500 focus:ring-4 focus:outline-none focus:ring-lime-300`}
                         >This {label}</p>
                     })}
 

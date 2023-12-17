@@ -10,18 +10,20 @@ import Expense from "../interfaces/Expense.ts";
 
 import {Modal, Datepicker, Button} from 'flowbite-react';
 import moment from "moment";
+import useExpenses from "../hooks/useExpenses.ts";
 
 const AddExpense = () => {
     const {user} = useUser();
+    const [key, setKey] = useState(0);
     const [pageSwitch, setPageSwitch] = useState("Expense");
     const [selectedDate, setSelectedDate] = useState<moment.Moment | Date>(moment());
     const [selectedCategory, setSelectedCategory] = useState<null | number>(null);
-    const [amount, setAmount] = useState<undefined | number>(undefined);
+    const [amount, setAmount] = useState<null | number>(null);
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();
     const [newCategory, setNewCategory] = useState("");
     const [userCategories, setUserCategories] = useState<null | Category[]>(null);
-    const [dailyExpenses, setDailyExpenses] = useState<null | Expense[]>(null)
+    const dailyExpenses = useExpenses({period: Period.DAY, key});
 
     const isExpensePage = pageSwitch === "Expense"
 
@@ -30,22 +32,15 @@ const AddExpense = () => {
             setSelectedDate(current => moment(current));
             const payload = {user: user, date: selectedDate, amount, category: userCategories[selectedCategory].name}
             await axiosInstance.post('/expense', payload);
-            await getUserExpenses(Period.DAY);
-            setSelectedCategory(null);
 
+            setKey((prev) => prev + 1);
+            setSelectedCategory(null);
+            setAmount(null);
         } else {
             console.log('set up error handling')
         }
     };
 
-    const getUserExpenses = async (period: Period) => {
-        const params = {
-            userId: user?._id,
-            period: period
-        }
-        const response = await axiosInstance.get(`/expense`, {params});
-        setDailyExpenses(response.data.expenses);
-    }
     const addCategory = async () => {
         const payload = {user: user, categoryName: newCategory}
         await axiosInstance.post('/category', payload);
@@ -66,7 +61,6 @@ const AddExpense = () => {
     };
 
     useEffect(() => {
-        getUserExpenses(Period.DAY);
         getCategories();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -80,9 +74,10 @@ const AddExpense = () => {
                 <button type="button" onClick={handleSwitchChange} className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium text-sm px-5 py-2.5 text-center mb-2">{pageSwitch}</button>
             }
             <div className="flex-col space-y-10" >
-                <section className="flex w-[95%] justify-around m-auto mt-10">
-                    <div className={`relative ${isExpensePage ? 'w-[25%]' : 'w-[75%]'}`}>
-                        <input min={0} value={amount} onChange={(event) => setAmount(event.target.valueAsNumber)}
+                {/* Amount Section */}
+                <section className={`flex w-[95%] justify-around m-auto ${isExpensePage && 'mt-10'}`}>
+                    <div className={`relative ${isExpensePage ? 'w-[25%]' : 'w-[100%]'}`}>
+                        <input min={0} value={amount ?? ''} onChange={(event) => setAmount(event.target.valueAsNumber)}
                             className={`w-full outline-none text-lg text-center bg-gray-700 p-2 rounded-xl text-stone-300 font-medium placeholder-stone-500 focus:ring-4 focus:outline-none ${isExpensePage ? 'focus:ring-lime-500' : 'focus:ring-green-300'}`}
                             type="number" placeholder="5.99" />
                         <div className="absolute top-2.5 left-0 text-stone-300 m-0 p-0">
@@ -136,9 +131,8 @@ const AddExpense = () => {
                     <button type="button" className="w-full text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-800 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add</button>
                 }
             </section>
-
             <section className={`mb-4 w-full mx-auto h-60 max-h-80 overflow-y-auto`} >
-                {/* Single expense */}
+
                 <p className="text-right text-white pr-3">{isExpensePage ? 'Daily Expenses:' : 'Daily Incomes:'}</p>
                 {(isExpensePage && dailyExpenses) && dailyExpenses.map((expense, i) => {
                     const date = new Date(expense.date);
@@ -175,10 +169,10 @@ const AddExpense = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={addCategory}>Create</Button>
-                    <Button color="gray" onClick={() => setOpenModal(undefined)}>   Close</Button>
+                    <Button color="gray" onClick={() => setOpenModal(undefined)}>Close</Button>
                 </Modal.Footer>
             </Modal>
-        </main>
+        </main >
     )
 }
 
