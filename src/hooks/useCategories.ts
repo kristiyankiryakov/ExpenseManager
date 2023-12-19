@@ -28,16 +28,26 @@ const useCategories = () => {
     }, [fetchNewCategory]);
 
     const addCategory = async () => {
+        if (newCategory.length < 3) {
+            console.log('handle minimum length');
+            return;
+        }
+        if (userCategories?.find((cat) => cat.name == newCategory)) {
+            console.log('handle category already exists');
+            return;
+        }
         const payload = {user: user, categoryName: newCategory}
         await axiosInstance.post('/category', payload);
         setFetchNewCategory(true);
+        setNewCategory("");
     }
+
 
     const selectCategory = (index: number) => {
         selectedCategory == index ? setSelectedCategory(null) : setSelectedCategory(index);
     }
 
-    return {userCategories, selectedCategory, setSelectedCategory, selectCategory, newCategory, setNewCategory, addCategory};
+    return {userCategories, selectedCategory, setSelectedCategory, selectCategory, setNewCategory, addCategory};
 }
 
 export default useCategories
