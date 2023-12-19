@@ -15,11 +15,12 @@ const IncomeVsExpenses = () => {
                     dataset={dataset}
                     xAxis={[{scaleType: 'band', dataKey: 'month'}]}
                     series={[
-                        {dataKey: 'Income', label: 'Income', },
-                        {dataKey: 'Expense', label: 'Expense', },
+                        {dataKey: 'Income', label: 'Income', color: '#3b48e0'},
+                        {dataKey: 'Expense', label: 'Expense', color : '#da00ff' },
                     ]}
                     slotProps={{
                         legend: {
+
                             labelStyle: {
                                 fontSize: 16,
                                 fontWeight: 500,
@@ -27,6 +28,7 @@ const IncomeVsExpenses = () => {
                             },
                         },
                     }}
+
                     {...chartSetting}
                 />
             </section>
