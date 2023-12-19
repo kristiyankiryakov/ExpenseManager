@@ -3,7 +3,6 @@ import {AiOutlineAppstoreAdd} from "react-icons/ai";
 import {BiCategory, BiDollar} from "react-icons/bi";
 import Period from "../enums/ExpensePeriod.ts";
 import {getIcon} from "../helpers/icons.tsx";
-
 import {Button, Datepicker, Modal} from 'flowbite-react';
 import useCategories from "../hooks/useCategories.ts";
 import useExpenses from "../hooks/useExpenses.ts";
@@ -13,8 +12,6 @@ const AddExpense = () => {
     const {dailyExpenses, addExpense, amount, setAmount, setSelectedDate} = useExpenses({period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
 
     const [pageSwitch, setPageSwitch] = useState("Expense");
-
-
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();
     const isExpensePage = pageSwitch === "Expense"

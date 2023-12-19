@@ -22,16 +22,21 @@ const useExpenses = ({period, userCategories, selectedCategory, setSelectedCateg
     const [selectedDate, setSelectedDate] = useState<moment.Moment | Date>(moment());
 
     useEffect(() => {
-
-        (async () => {
-            const params = {
-                userId: user?._id,
-                period: period
+        const fetchExpenses = async () => {
+            try {
+                const params = {
+                    userId: user?._id,
+                    period: period
+                }
+                const response = await axiosInstance.get(`/expense`, {params});
+                setDailyExpenses(response.data.expenses);
+            } catch (err) {
+                console.log(err);
+                return null;
             }
-            const response = await axiosInstance.get(`/expense`, {params});
-            setDailyExpenses(response.data.expenses);
-        })();
+        }
 
+        fetchExpenses();
     }, [key, user?._id, period]);
 
     const addExpense = async () => {
