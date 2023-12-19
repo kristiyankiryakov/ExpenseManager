@@ -13,11 +13,12 @@ import FilterCategories from './FilterCategories.tsx';
 import PageSwitch from './PageSwitch.tsx';
 import SingleExpense from './SingleExpense.tsx';
 import useFilteredCats from '../../hooks/useFilteredCats.ts';
+import { customTheme } from '../../helpers/calendarTheme.ts';
 
 const Index = () => {
     const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
     const {dailyExpenses, addExpense, amount, setAmount, setSelectedDate} = useExpenses({period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
-    
+
     const [pageSwitch, setPageSwitch] = useState<Page>(Page.EXPENSE);
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();
@@ -55,7 +56,7 @@ const Index = () => {
             </div>
 
             <section className="w-[95%] my-2 mx-auto" >
-                <Datepicker style={{color: "#646b6e"}} autoHide onSelectedDateChanged={(d) => setSelectedDate(d)} />
+                <Datepicker theme={customTheme} autoHide onSelectedDateChanged={(d) => setSelectedDate(d)} />
             </section>
 
             <AddTransaction addExpense={addExpense} />
