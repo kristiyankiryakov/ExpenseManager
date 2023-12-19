@@ -1,9 +1,9 @@
 enum Color {
-    Food = "#02b2af",
-    Other = "#2e96ff",
-    Fuel = "#b800d8",
-    Rent = "#60009b",
-    Bills = "#2731c8",
-    Phone = "#03008d",
+    Food = "#b9d04c",
+    Other = "#b7cd10",
+    Fuel = "#a5ce8a",
+    Rent = "#76a770",
+    Bills = "#6ab767",
+    Phone = "#4eae4a",
 }
 export default Color

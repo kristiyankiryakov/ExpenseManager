@@ -67,7 +67,7 @@ const Details = () => {
             return {
                 label: category,
                 value: data[category],
-                color: Color[category as typeof Color] ?? '#72ccff'
+                color: Color[category as typeof Color] ?? '#34a835'
             };
         });
         return modified
