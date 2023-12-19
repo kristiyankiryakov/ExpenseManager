@@ -5,7 +5,7 @@
 // import {AiFillPhone} from "react-icons/ai";
 // import {BsThreeDots} from "react-icons/bs";
 // import Icons from "../interfaces/Icons";
-import {faBurger, faGasPump, faHouse, faMoneyBill, faPhone, faEllipsis, faUserPlus} from '@fortawesome/free-solid-svg-icons'
+import {faBurger, faGasPump, faHouse, faMoneyBill, faPhone, faEllipsis, faUserPlus, faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 export const getIcon = (icon: string): JSX.Element => {
@@ -16,6 +16,10 @@ export const getIcon = (icon: string): JSX.Element => {
         case "Rent": return <FontAwesomeIcon icon={faHouse} color="white" size="xl" />;
         case "Phone": return <FontAwesomeIcon icon={faPhone} color="white" size="xl" />;
         case "Other": return <FontAwesomeIcon icon={faEllipsis} color="white" size="xl" />;
+        // #84cc16
+        case "Up": return <FontAwesomeIcon icon={faChevronUp} color="white" size="xl" />;
+        // #09885e
+        case "Down": return <FontAwesomeIcon icon={faChevronDown} color="white" size="xl"/>;
         default: return <FontAwesomeIcon icon={faUserPlus} color="white" size="xl" />
     }
 }

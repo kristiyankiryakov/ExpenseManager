@@ -8,8 +8,8 @@ import useCategories from "../../hooks/useCategories.ts";
 import useExpenses from "../../hooks/useExpenses.ts";
 import CategoryModal from './CategoryModal.tsx';
 
-const expenseStyles = "text-white bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 dark:shadow-lg dark:shadow-lime-800/80 font-medium text-sm px-5 py-2.5 text-center mb-2"
-const incomeStyles = "text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium text-sm px-5 py-2.5 text-center mb-2"
+// const expenseStyles = "text-white bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 dark:shadow-lg dark:shadow-lime-800/80 font-medium text-sm px-5 py-2.5 text-center mb-2"
+const selectedBckg = 'bg-lime-400 shadow-green-800/80';
 
 const Index = () => {
     const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
@@ -20,15 +20,18 @@ const Index = () => {
     const [openModal, setOpenModal] = useState<string | undefined>();
     const isExpensePage = pageSwitch === "Expense"
 
-    const handleSwitchChange = () => {
-        setPageSwitch(prevSwitch => (prevSwitch === "Expense" ? "Income" : "Expense"));
-    };
-
     return (
         <main className="bg-slate-900 flex flex-col h-screen justify-between">
-            
-            <button type="button" onClick={handleSwitchChange} className={`${isExpensePage ? expenseStyles : incomeStyles}`}>{pageSwitch}</button>
-           
+
+            <div className='flex w-11/12 justify-around text-white mt-5 py-2 mx-auto rounded-2xl bg-lime-700 font-medium text-sm' >
+
+                <button onClick={() => setPageSwitch("Expense")} className={`px-6 py-1 rounded-lg focus:ring-2 focus:outline-none focus:ring-lime-300 ${isExpensePage && selectedBckg}`} ><span className='pr-1' >{getIcon("Down")}</span> Expense</button>
+                <button onClick={() => setPageSwitch("Income")} className={`px-6 py-1 rounded-lg focus:ring-2 focus:outline-none focus:ring-lime-300 ${!isExpensePage && selectedBckg}`}  ><span className='pr-1' >{getIcon("Up")}</span>Income</button>
+
+            </div>
+
+            {/* <button type="button" onClick={handleSwitchChange} className={`${isExpensePage ? expenseStyles : incomeStyles}`}>{pageSwitch}</button> */}
+
             <div className="flex-col space-y-10" >
                 {/* Amount Section */}
                 <section className={`flex w-[95%] justify-around m-auto ${isExpensePage && 'mt-10'}`}>
