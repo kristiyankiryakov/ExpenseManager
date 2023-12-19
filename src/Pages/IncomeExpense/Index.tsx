@@ -9,7 +9,7 @@ import useExpenses from "../../hooks/useExpenses.ts";
 import CategoryModal from './CategoryModal.tsx';
 
 // const expenseStyles = "text-white bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 dark:shadow-lg dark:shadow-lime-800/80 font-medium text-sm px-5 py-2.5 text-center mb-2"
-const selectedBckg = 'bg-lime-400 shadow-green-800/80';
+const selectedBckg = 'bg-lime-400 shadow-lg shadow-lime-500/50';
 
 const Index = () => {
     const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
@@ -24,10 +24,8 @@ const Index = () => {
         <main className="bg-slate-900 flex flex-col h-screen justify-between">
 
             <div className='flex w-11/12 justify-around text-white mt-5 py-2 mx-auto rounded-2xl bg-lime-700 font-medium text-sm' >
-
                 <button onClick={() => setPageSwitch("Expense")} className={`px-6 py-1 rounded-lg focus:ring-2 focus:outline-none focus:ring-lime-300 ${isExpensePage && selectedBckg}`} ><span className='pr-1' >{getIcon("Down")}</span> Expense</button>
                 <button onClick={() => setPageSwitch("Income")} className={`px-6 py-1 rounded-lg focus:ring-2 focus:outline-none focus:ring-lime-300 ${!isExpensePage && selectedBckg}`}  ><span className='pr-1' >{getIcon("Up")}</span>Income</button>
-
             </div>
 
             {/* <button type="button" onClick={handleSwitchChange} className={`${isExpensePage ? expenseStyles : incomeStyles}`}>{pageSwitch}</button> */}
@@ -40,14 +38,14 @@ const Index = () => {
                             className={`w-full outline-none text-lg text-center bg-gray-700 p-2 rounded-xl text-stone-300 font-medium placeholder-stone-500 focus:ring-4 focus:outline-none ${isExpensePage ? 'focus:ring-lime-500' : 'focus:ring-green-300'}`}
                             type="number" placeholder="5.99" />
                         <div className="absolute top-2.5 left-0 text-stone-300 m-0 p-0">
-                            <BiDollar style={{color: isExpensePage ? '#84cc16' : '#09885e'}} size={24} />
+                            <BiDollar style={{color: isExpensePage ? '#a3e635' : '#09885e'}} size={24} />
                         </div>
                     </div>
                     {isExpensePage && <div className="relative">
                         <input className={`w-full bg-gray-700 outline-none text-lg text-center p-2  text-stone-100 rounded-xl placeholder-stone-500 focus:ring-4 focus:outline-none focus:ring-lime-500`} type="text"
                             value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Search Category" />
                         <div className="absolute top-2 left-2" >
-                            <BiCategory size={30} color='#84cc16' />
+                            <BiCategory size={30} color='#a3e635' />
                         </div>
                     </div>}
                 </section>
@@ -85,9 +83,9 @@ const Index = () => {
 
             <section className="w-[95%] mx-auto" >
                 {isExpensePage ?
-                    <button onClick={addExpense} type="button" className="w-full text-white bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-800 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add</button>
+                    <button onClick={addExpense} type="button" className="w-full text-white bg-gradient-to-r from-lime-400 via-lime-500 to-lime-600 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-lime-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add</button>
                     :
-                    <button type="button" className="w-full text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-800 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add</button>
+                    <button type="button" className="w-full text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Add</button>
                 }
             </section>
             <section className={`mb-4 w-full mx-auto h-60 max-h-80 overflow-y-auto`} >
@@ -97,24 +95,31 @@ const Index = () => {
                     const date = new Date(expense.date);
                     const hours = date.getHours();
                     const minutes = date.getMinutes();
+                  
                     return (
-                        <div key={i} className="w-[95%] m-auto border-b border-gray-500 relative">
-                            <div className="flex justify-between items-center px-6 mb-2 mt-1">
+                        <div key={i} className="w-[95%] m-auto bg-lime-700 rounded-lg relative">
+                            <div className="flex justify-between items-center px-4 mb-2 mt-1">
+
                                 <div className="flex space-x-4 justify-center items-center my-2" >
                                     <div className=" p-2 bg-lime-500 rounded-lg w-fit m-auto" >
                                         <span>{getIcon(expense.category)}</span>
                                     </div>
-                                    <div className="bg-lime-900 w-fit rounded-lg px-2 m-auto" >
-                                        <p className="text-center text-gray-300" >{expense.category}</p>
+
+                                    <div className='flex-col' >
+                                        <p className="text-left text-white" >{expense.category}</p>
+
+                                        <div className="flex space-x-1" >
+                                            <p className="text-gray-300 text-xs text-center" >{`${hours}:${minutes}`}</p>
+                                            <p className="text-gray-300 text-xs text-center" >{new Date(expense.date).toLocaleDateString()}</p>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <h3 className="text-white text-lg font-medium" >$ {expense.amount} </h3>
+                                <div className='flex-col' >
+                                    <h3 className="text-white text-lg font-medium" >$ {expense.amount} </h3>
+                                </div>
                             </div>
-                            <div className="flex space-x-2 absolute right-5 top-12" >
-                                <p className="text-gray-600 text-xs text-center" >{`${hours}:${minutes}`}</p>
-                                <p className="text-gray-600 text-xs text-center" >{new Date(expense.date).toLocaleDateString()}</p>
-                            </div>
+
                         </div>
                     )
                 })}
