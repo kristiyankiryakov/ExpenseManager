@@ -4,14 +4,16 @@ type Props = {
     children: JSX.Element
 }
 type User = {
-    active:boolean,
+    active: boolean,
     roles: string[],
-    username:string,
-    __v:number,
-    _id:string
+    username: string,
+    __v: number,
+    _id: string
 }
 
-const UserContext = createContext<null | {user: null | User, setUser: React.Dispatch<React.SetStateAction<null | User>>}>(null);
+const UserContext = createContext<null | {
+    user: null | User, setUser: React.Dispatch<React.SetStateAction<null | User>>
+}>(null);
 
 export function UserProvider({children}: Props) {
     const [user, setUser] = useState<null | User>(null);
@@ -25,10 +27,10 @@ export function UserProvider({children}: Props) {
 
 export function useUser() {
     const context = useContext(UserContext);
-  
+
     if (context === null) {
-      throw new Error('useUser must be used within a UserProvider');
+        throw new Error('useUser must be used within a UserProvider');
     }
-  
+
     return context;
-  }
+}

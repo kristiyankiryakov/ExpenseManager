@@ -1,70 +1,27 @@
-import {useEffect, useState, } from "react"
-import {BiDollar, BiCategory} from "react-icons/bi";
-import {getIcon} from "../helpers/icons.tsx";
+import {useState} from "react";
 import {AiOutlineAppstoreAdd} from "react-icons/ai";
-import {useUser} from "../context/userContext";
-import {axiosInstance} from "../helpers/axios";
-import Category from "../interfaces/Category.ts";
-import Period from "../enums/ExpensePeriod.ts"
-import Expense from "../interfaces/Expense.ts";
+import {BiCategory, BiDollar} from "react-icons/bi";
+import Period from "../enums/ExpensePeriod.ts";
+import {getIcon} from "../helpers/icons.tsx";
 
-import {Modal, Datepicker, Button} from 'flowbite-react';
-import moment from "moment";
+import {Button, Datepicker, Modal} from 'flowbite-react';
+import useCategories from "../hooks/useCategories.ts";
 import useExpenses from "../hooks/useExpenses.ts";
 
 const AddExpense = () => {
-    const {user} = useUser();
-    const [key, setKey] = useState(0);
+    const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
+    const {dailyExpenses, addExpense, amount, setAmount, setSelectedDate} = useExpenses({period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
+
     const [pageSwitch, setPageSwitch] = useState("Expense");
-    const [selectedDate, setSelectedDate] = useState<moment.Moment | Date>(moment());
-    const [selectedCategory, setSelectedCategory] = useState<null | number>(null);
-    const [amount, setAmount] = useState<null | number>(null);
+
+
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();
-    const [newCategory, setNewCategory] = useState("");
-    const [userCategories, setUserCategories] = useState<null | Category[]>(null);
-    const dailyExpenses = useExpenses({period: Period.DAY, key});
-
     const isExpensePage = pageSwitch === "Expense"
-
-    const addExpense = async () => {
-        if (typeof selectedCategory === 'number' && selectedDate && userCategories) {
-            setSelectedDate(current => moment(current));
-            const payload = {user: user, date: selectedDate, amount, category: userCategories[selectedCategory].name}
-            await axiosInstance.post('/expense', payload);
-
-            setKey((prev) => prev + 1);
-            setSelectedCategory(null);
-            setAmount(null);
-        } else {
-            console.log('set up error handling')
-        }
-    };
-
-    const addCategory = async () => {
-        const payload = {user: user, categoryName: newCategory}
-        await axiosInstance.post('/category', payload);
-        getCategories();
-    }
-    const getCategories = async () => {
-        const params = {userId: user?._id, }
-        const userCategoriesResponse = await axiosInstance.get(`/category`, {params});
-
-        setUserCategories(userCategoriesResponse.data);
-    }
-    const selectCategory = (index: number) => {
-        selectedCategory == index ? setSelectedCategory(null) : setSelectedCategory(index);
-    }
 
     const handleSwitchChange = () => {
         setPageSwitch(prevSwitch => (prevSwitch === "Expense" ? "Income" : "Expense"));
     };
-
-    useEffect(() => {
-        getCategories();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
 
     return (
         <main className="bg-slate-900 flex flex-col h-screen justify-between">
@@ -165,10 +122,11 @@ const AddExpense = () => {
             <Modal dismissible show={openModal === 'dismissible'} onClose={() => setOpenModal(undefined)}>
                 <Modal.Header>Category Name</Modal.Header>
                 <Modal.Body  >
-                    <input maxLength={6} onChange={(e) => setNewCategory(e.target.value)} type="text" id="small-input" className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                    <input placeholder="TestCategory" maxLength={6} onChange={(e) => setNewCategory(e.target.value)} type="text" id="small-input"
+                        className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-lime-500 dark:focus:border-lime-500" />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={addCategory}>Create</Button>
+                    <Button style={{backgroundColor: "#84cc16"}} onClick={addCategory}>Create</Button>
                     <Button color="gray" onClick={() => setOpenModal(undefined)}>Close</Button>
                 </Modal.Footer>
             </Modal>

@@ -34,4 +34,4 @@ const IncomeVsExpenses = () => {
     )
 }
 
-export default IncomeVsExpenses
+export default IncomeVsExpenses 
