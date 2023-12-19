@@ -8,6 +8,9 @@ import useCategories from "../../hooks/useCategories.ts";
 import useExpenses from "../../hooks/useExpenses.ts";
 import CategoryModal from './CategoryModal.tsx';
 
+const expenseStyles = "text-white bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 dark:shadow-lg dark:shadow-lime-800/80 font-medium text-sm px-5 py-2.5 text-center mb-2"
+const incomeStyles = "text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium text-sm px-5 py-2.5 text-center mb-2"
+
 const Index = () => {
     const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
     const {dailyExpenses, addExpense, amount, setAmount, setSelectedDate} = useExpenses({period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
@@ -23,11 +26,9 @@ const Index = () => {
 
     return (
         <main className="bg-slate-900 flex flex-col h-screen justify-between">
-            {isExpensePage ?
-                <button type="button" onClick={handleSwitchChange} className="text-white bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 shadow-lg shadow-lime-500/50 dark:shadow-lg dark:shadow-lime-800/80 font-medium text-sm px-5 py-2.5 text-center mb-2">{pageSwitch}</button>
-                :
-                <button type="button" onClick={handleSwitchChange} className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium text-sm px-5 py-2.5 text-center mb-2">{pageSwitch}</button>
-            }
+            
+            <button type="button" onClick={handleSwitchChange} className={`${isExpensePage ? expenseStyles : incomeStyles}`}>{pageSwitch}</button>
+           
             <div className="flex-col space-y-10" >
                 {/* Amount Section */}
                 <section className={`flex w-[95%] justify-around m-auto ${isExpensePage && 'mt-10'}`}>
@@ -117,7 +118,7 @@ const Index = () => {
 
             </section>
 
-         <CategoryModal openModal={openModal} setOpenModal={setOpenModal} addCategory={addCategory} setNewCategory={setNewCategory} />
+            <CategoryModal openModal={openModal} setOpenModal={setOpenModal} addCategory={addCategory} setNewCategory={setNewCategory} />
         </main >
     )
 }
