@@ -33,11 +33,16 @@ function useHomeChart(dataset: DataItem[]) {
                 months.map((month) => {
                     const expenseForMonth = expenses.find((ex) => ex.month == month);
                     const incomeForMonth = incomes.find((inc) => inc.month == month);
-
-                    if (expenseForMonth && incomeForMonth) {
-                        const temp = {month: month, income: incomeForMonth.total, expense: incomeForMonth.total}
-                        result.push(temp);
+                    const temp: DataItem = {month: month, expense: 0, income: 0}
+                    if (expenseForMonth) {
+                        temp.expense = expenseForMonth.total;
                     }
+                    if (incomeForMonth) {
+                        temp.income = incomeForMonth.total;
+                    }
+                    
+                    result.push(temp);
+
                 });
                 setChart(result);
 
