@@ -20,7 +20,7 @@ export const Index = () => {
     const [pageSwitch, setPageSwitch] = useState<Page>(Page.EXPENSE);
 
     const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
-    const {dailyTransactions, addTransaction, amount, setAmount, setSelectedDate} = useTransactions({type: pageSwitch, period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
+    const {transactions : dailyTransactions, addTransaction, amount, setAmount, setSelectedDate} = useTransactions({type: pageSwitch, period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
 
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();

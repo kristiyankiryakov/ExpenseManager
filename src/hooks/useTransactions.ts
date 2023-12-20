@@ -7,21 +7,25 @@ import {useUser} from "../context/userContext";
 import moment from "moment";
 import Category from "../interfaces/Category";
 import Page from "../enums/Page";
+import {chartItem, formatDates, formatForChart} from "../helpers/DeitalsPageHelper";
 
 type Props = {
     type: Page
     period: Period,
-    userCategories: null | Category[],
-    selectedCategory: number | null,
-    setSelectedCategory: React.Dispatch<React.SetStateAction<number | null>>
+    format?: boolean
+    userCategories?: null | Category[],
+    selectedCategory?: number | null,
+    setSelectedCategory?: React.Dispatch<React.SetStateAction<number | null>>
 }
 
-const useTransactions = ({type, period, userCategories, selectedCategory, setSelectedCategory}: Props) => {
+const useTransactions = ({type, period, format, userCategories, selectedCategory, setSelectedCategory}: Props) => {
     const {user} = useUser();
     const [key, setKey] = useState(0);
-    const [dailyTransactions, setDailyTransactions] = useState<null | Transaction[]>(null);
+    const [transactions, setTransactions] = useState<null | Transaction[]>(null);
     const [amount, setAmount] = useState<null | number>(null);
     const [selectedDate, setSelectedDate] = useState<moment.Moment | Date>(moment());
+    const [chartData, setChartData] = useState<null | chartItem[]>(null);
+    const [chartPeriod, setChartPeriod] = useState("");
 
     useEffect(() => {
         const fetchTransactions = async () => {
@@ -29,10 +33,17 @@ const useTransactions = ({type, period, userCategories, selectedCategory, setSel
                 const params = {
                     userId: user?._id,
                     period: period,
-                    type: type
+                    type: type,
+                    format: format,
                 }
                 const response = await axiosInstance.get(`/transaction`, {params});
-                setDailyTransactions(response.data.transactions);
+                if (format) {
+                    const formatted = formatForChart(response.data.formatted);
+                    setChartData(formatted);
+                    setChartPeriod(formatDates(response.data.period.startDate, response.data.period.endDate))
+
+                }
+                setTransactions(response.data.transactions);
             } catch (err) {
                 console.log(err);
                 return null;
@@ -40,7 +51,7 @@ const useTransactions = ({type, period, userCategories, selectedCategory, setSel
         }
 
         fetchTransactions();
-    }, [key, user?._id, period, type]);
+    }, [key, user?._id, period, type, format]);
 
     const addTransaction = async (type: Page) => {
         if (typeof selectedCategory === 'number' && selectedDate && userCategories) {
@@ -50,14 +61,14 @@ const useTransactions = ({type, period, userCategories, selectedCategory, setSel
 
             // modify to fetch incomes or expenses based on type
             setKey((prev) => prev + 1);
-            setSelectedCategory(null);
+            setSelectedCategory && setSelectedCategory(null);
             setAmount(null);
         } else {
             console.log('set up error handling')
         }
     };
 
-    return {dailyTransactions, addTransaction, amount, setAmount, setSelectedDate};
+    return {transactions, addTransaction, amount, setAmount, setSelectedDate, chartData ,chartPeriod};
 }
 
 export default useTransactions
