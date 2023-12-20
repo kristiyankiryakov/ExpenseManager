@@ -1,5 +1,4 @@
 import asyncHandler from "express-async-handler";
-import Expense from "../models/Expense.js";
 import Transaction from "../models/Transaction.js";
 // const moment = require('moment');
 import moment from 'moment';
@@ -70,7 +69,6 @@ const getUserTransactions = asyncHandler(async (req, res) => {
   }
 
   try {
-    console.log(type);
     const period = { startDate, endDate };
     const transactions = await Transaction.find({
       user: userId,
@@ -92,15 +90,16 @@ const getUserTransactions = asyncHandler(async (req, res) => {
   }
 })
 
-const getExpensesByMonth = asyncHandler(async (req, res) => {
+const getYearlyTransactionsByMonth = asyncHandler(async (req, res) => {
   const currentYear = moment().year();
-  const { userId } = req.query;
+  const { userId, type } = req.query;
 
   try {
-    const expenses = await Expense.aggregate([
+    const transactions = await Transaction.aggregate([
       {
         $match: {
           user: new mongoose.Types.ObjectId(userId),
+          type: type,
           date: {
             $gte: new Date(`${currentYear}-01-01`),
             $lt: new Date(`${currentYear + 1}-01-01`)
@@ -115,15 +114,15 @@ const getExpensesByMonth = asyncHandler(async (req, res) => {
       }
     ]);
 
-    const monthlyExpenses = expenses.map((item) => {
+    const monthlyTransactions = transactions.map((item) => {
       const monthName = moment().month(item._id - 1).format("MMM"); // Adjusted this line
-      return { month: monthName, Expense: item.totalAmount };
+      return { month: monthName, total: item.totalAmount };
     });
 
-    return res.status(200).json({ monthlyExpenses });
+    return res.status(200).json({ monthlyTransactions, type: type });
   } catch (error) {
     console.log(error)
-    return res.status(400).json({ message: 'error retrieving expenses', error });
+    return res.status(400).json({ message: `error retrieving transactions of type ${type}`, error });
   }
 
 })
@@ -132,5 +131,5 @@ const getExpensesByMonth = asyncHandler(async (req, res) => {
 export default {
   createTransaction,
   getUserTransactions,
-  getExpensesByMonth,
+  getYearlyTransactionsByMonth,
 }

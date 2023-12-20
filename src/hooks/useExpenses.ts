@@ -24,7 +24,7 @@ const useExpenses = ({type, period, userCategories, selectedCategory, setSelecte
     const [selectedDate, setSelectedDate] = useState<moment.Moment | Date>(moment());
 
     useEffect(() => {
-        const fetchExpenses = async () => {
+        const fetchTransactions = async () => {
             try {
                 const params = {
                     userId: user?._id,
@@ -39,7 +39,7 @@ const useExpenses = ({type, period, userCategories, selectedCategory, setSelecte
             }
         }
 
-        fetchExpenses();
+        fetchTransactions();
     }, [key, user?._id, period, type]);
 
     const addTransaction = async (type: Page) => {

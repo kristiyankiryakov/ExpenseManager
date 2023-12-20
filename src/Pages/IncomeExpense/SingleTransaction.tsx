@@ -1,3 +1,4 @@
+import React from 'react'
 import {getIcon} from '../../helpers/icons'
 import Transaction from '../../interfaces/Transaction'
 
@@ -5,7 +6,7 @@ type Props = {
     transaction: Transaction
 }
 
-const SingleExpense = ({transaction}: Props) => {
+const SingleTransaction = ({transaction}: Props) => {
     const date = new Date(transaction.date);
     const hours = date.getHours();
     const minutes = date.getMinutes();
@@ -38,4 +39,4 @@ const SingleExpense = ({transaction}: Props) => {
     )
 }
 
-export default SingleExpense
+export default SingleTransaction

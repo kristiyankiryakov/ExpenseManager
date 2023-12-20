@@ -5,18 +5,17 @@ import useHomeChart from "../hooks/useHomeChart.ts";
 import {dataset, chartSetting} from "../helpers/chartSettings.ts";
 
 const HomeChart = () => {
-    useHomeChart(dataset);
+    const chart = useHomeChart(dataset);
 
     return (
         <main className="flex-col w-[95%] mx-auto">
             <section className=" border border-gray-600 rounded-xl" >
                 <BarChart
-                    // dataset={chart ?? dataset}
-                    dataset={dataset}
+                    dataset={chart ?? dataset}
                     xAxis={[{scaleType: 'band', dataKey: 'month'}]}
                     series={[
-                        {dataKey: 'Income', label: 'Income', color: '#7cb937'},
-                        {dataKey: 'Expense', label: 'Expense', color: '#b7cd10'},
+                        {dataKey: 'income', label: 'Income', color: '#7cb937'},
+                        {dataKey: 'expense', label: 'Expense', color: '#b7cd10'},
                     ]}
                     slotProps={{
                         legend: {

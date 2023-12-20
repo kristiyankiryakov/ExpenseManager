@@ -8,7 +8,7 @@ router.route('/')
     .get(verifyJWT, transactionController.getUserTransactions)
 
 router.route('/schema')
-    .get(verifyJWT, transactionController.getExpensesByMonth);
+    .get(verifyJWT, transactionController.getYearlyTransactionsByMonth);
 
 
 export default router

@@ -5,13 +5,14 @@ import Page from '../../enums/Page.ts';
 import {getIcon} from '../../helpers/icons.tsx';
 import useCategories from "../../hooks/useCategories.ts";
 import useExpenses from "../../hooks/useExpenses.ts";
-import AddTransaction from './AddTranscation.tsx';
+import AddTransaction from './AddTransaction.tsx';
 import Amount from './Amount.tsx';
 import CategoryModal from './CategoryModal.tsx';
 import CreateCategoryBtn from './CreateCategoryBtn.tsx';
 import FilterCategories from './FilterCategories.tsx';
 import PageSwitch from './PageSwitch.tsx';
-import SingleExpense from './SingleExpense.tsx';
+import SingleTransaction from "./SingleTransaction.tsx"
+
 import useFilteredCats from '../../hooks/useFilteredCats.ts';
 import {customTheme} from '../../helpers/calendarTheme.ts';
 
@@ -66,7 +67,7 @@ export const Index = () => {
                 <p className="text-right text-stone-400 pr-3">{isExpensePage ? 'Daily Expenses:' : 'Monthly Income'}</p>
 
                 {dailyTransactions && dailyTransactions.map((transaction, i) => {
-                    return <SingleExpense transaction={transaction} key={i} />;
+                    return <SingleTransaction transaction={transaction} key={i} />;
                 })}
 
             </section>

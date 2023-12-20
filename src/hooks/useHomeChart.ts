@@ -3,15 +3,17 @@ import {useEffect, useState} from "react";
 import {axiosInstance} from "../helpers/axios";
 import {useUser} from "../context/userContext";
 import {DataItem} from "../helpers/chartSettings";
+import Page from "../enums/Page";
 
-type Expense = {
-    month: string,
-    Expense: number
-}
+const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+]
 
-type Income = {
-    amount: number,
+type transactionForMonth = {
     month: string
+    total: number
+    type: Page
+
 }
 
 function useHomeChart(dataset: DataItem[]) {
@@ -20,40 +22,35 @@ function useHomeChart(dataset: DataItem[]) {
 
     useEffect(() => {
         const getChart = async () => {
-            const params = {
-                userId: user?._id,
-            }
             try {
-                const chart = await axiosInstance.get('/chart', {params});
-                // console.log(chart);
-                
+                const expenseParams = {userId: user?._id, type: Page.EXPENSE}
+                const responseExpenses = await axiosInstance.get('/transaction/schema', {params: expenseParams});
+                const incomeParams = {userId: user?._id, type: Page.INCOME}
+                const responseIncomes = await axiosInstance.get('/transaction/schema', {params: incomeParams});
+                const expenses: transactionForMonth[] = responseExpenses.data.monthlyTransactions;
+                const incomes: transactionForMonth[] = responseIncomes.data.monthlyTransactions;
+                const result: DataItem[] = [];
+                months.map((month) => {
+                    const expenseForMonth = expenses.find((ex) => ex.month == month);
+                    const incomeForMonth = incomes.find((inc) => inc.month == month);
+
+                    if (expenseForMonth && incomeForMonth) {
+                        const temp = {month: month, income: incomeForMonth.total, expense: incomeForMonth.total}
+                        result.push(temp);
+                    }
+                });
+                setChart(result);
+
             } catch (err) {
                 console.log(err);
                 return null;
             }
         }
+        getChart()
 
-        getChart();
+    }, []);
 
-    }, [])
-
-    // const getChart = async () => {
-    //     const params = {
-    //         userId: user?._id,
-    //     }
-    //     const incomeResponse = await axiosInstance.get('/income', {params});
-    //     const income = incomeResponse.data.income;
-    //     const expensesResponse = await axiosInstance.get('/expense/schema', {params});
-
-    //     const chartData = expensesResponse.data.monthlyExpenses.map((expense: any) => {
-    //         console.log(income);
-    //         const current = income.find((income: any) => income.month == expense.month)
-    //         expense['Income'] = current.amount;
-    //         return expense
-    //     });
-    //     setChart(chartData)
-    // }
-    // return chart;
+    return chart;
 }
 
 export default useHomeChart

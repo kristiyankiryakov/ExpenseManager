@@ -1,8 +1,8 @@
 import {axisClasses} from '@mui/x-charts';
 
 type DataItem = {
-    Income: number;
-    Expense: number;
+    income: number;
+    expense: number;
     month: string;
 };
 
@@ -22,28 +22,28 @@ const chartSetting = {
 };
 const dataset: DataItem[] = [
     {
-        Income: 65,
-        Expense: 60,
+        income: 65,
+        expense: 60,
         month: 'Aug',
     },
     {
-        Income: 51,
-        Expense: 51,
+        income: 51,
+        expense: 51,
         month: 'Sept',
     },
     {
-        Income: 60,
-        Expense: 65,
+        income: 60,
+        expense: 65,
         month: 'Oct',
     },
     {
-        Income: 67,
-        Expense: 64,
+        income: 67,
+        expense: 64,
         month: 'Nov',
     },
     {
-        Income: 61,
-        Expense: 70,
+        income: 61,
+        expense: 70,
         month: 'Dec',
     },
 ];
