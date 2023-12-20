@@ -4,7 +4,7 @@ import Period from '../../enums/ExpensePeriod.ts';
 import Page from '../../enums/Page.ts';
 import {getIcon} from '../../helpers/icons.tsx';
 import useCategories from "../../hooks/useCategories.ts";
-import useExpenses from "../../hooks/useExpenses.ts";
+import useTransactions from "../../hooks/useTransactions.ts";
 import AddTransaction from './AddTransaction.tsx';
 import Amount from './Amount.tsx';
 import CategoryModal from './CategoryModal.tsx';
@@ -20,7 +20,7 @@ export const Index = () => {
     const [pageSwitch, setPageSwitch] = useState<Page>(Page.EXPENSE);
 
     const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
-    const {dailyTransactions, addTransaction, amount, setAmount, setSelectedDate} = useExpenses({type: pageSwitch, period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
+    const {dailyTransactions, addTransaction, amount, setAmount, setSelectedDate} = useTransactions({type: pageSwitch, period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
 
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();

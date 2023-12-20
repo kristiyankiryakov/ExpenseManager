@@ -3,7 +3,7 @@ import {ThemeProvider, createTheme} from '@mui/material/styles';
 import {Outlet, Route, createBrowserRouter, createRoutesFromElements} from "react-router-dom";
 import {Index as IncomeExpense} from '../Pages/IncomeExpense/Index';
 import {Index as Home} from '../Pages/Home/Index';
-import Details from "../Components/Details";
+import {Index as Details} from '../Pages/Details/Index';
 import Login from "../Components/Login";
 import Protected from "../Components/Protected";
 import Register from "../Components/Register";

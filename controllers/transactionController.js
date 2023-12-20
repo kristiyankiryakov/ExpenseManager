@@ -30,7 +30,7 @@ const createTransaction = asyncHandler(async (req, res) => {
 
 const getUserTransactions = asyncHandler(async (req, res) => {
 
-  const { userId, period, type } = req.query;
+  const { userId, period, type, format } = req.query;
   const currentDate = new Date();
   let startDate = new Date(currentDate);
   let endDate;
@@ -75,16 +75,20 @@ const getUserTransactions = asyncHandler(async (req, res) => {
       type: type,
       date: { $gte: startDate, $lte: endDate ?? currentDate }, // Filter expenses within the specified period
     });
+    const response = { transactions, period }
 
-    // const expensesByCategory = expenses.reduce((acc, expense) => {
-    //   if (!acc[expense.category]) {
-    //     acc[expense.category] = 0;
-    //   }
-    //   acc[expense.category] += expense.amount;
-    //   return acc;
-    // }, {});
+    if (format) {
+      const transactionsByCategory = transactions.reduce((acc, transaction) => {
+        if (!acc[transaction.category]) {
+          acc[transaction.category] = 0;
+        }
+        acc[transaction.category] += transaction.amount;
+        return acc;
+      }, {});
+      response.formatted = transactionsByCategory
+    }
 
-    return res.status(200).json({ transactions, period });
+    return res.status(200).json(response);
   } catch (error) {
     return res.status(400).json({ message: `Error retrieving transactions of type: ${type}`, error });
   }
@@ -126,7 +130,6 @@ const getYearlyTransactionsByMonth = asyncHandler(async (req, res) => {
   }
 
 })
-
 
 export default {
   createTransaction,

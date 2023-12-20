@@ -16,7 +16,7 @@ type Props = {
     setSelectedCategory: React.Dispatch<React.SetStateAction<number | null>>
 }
 
-const useExpenses = ({type, period, userCategories, selectedCategory, setSelectedCategory}: Props) => {
+const useTransactions = ({type, period, userCategories, selectedCategory, setSelectedCategory}: Props) => {
     const {user} = useUser();
     const [key, setKey] = useState(0);
     const [dailyTransactions, setDailyTransactions] = useState<null | Transaction[]>(null);
@@ -60,4 +60,4 @@ const useExpenses = ({type, period, userCategories, selectedCategory, setSelecte
     return {dailyTransactions, addTransaction, amount, setAmount, setSelectedDate};
 }
 
-export default useExpenses
+export default useTransactions

@@ -1,11 +1,16 @@
 import {PieChart, pieArcLabelClasses} from '@mui/x-charts/PieChart';
-import Period from '../enums/ExpensePeriod';
 import {useEffect, useState} from 'react';
-import {useUser} from '../context/userContext';
-import Expense from '../interfaces/Transaction.ts';
-import {axiosInstance} from '../helpers/axios';
-import {getIcon} from '../helpers/icons';
-import Color from "../enums/CategoryColor.ts";
+import {useUser} from '../../context/userContext';
+import Period from '../../enums/ExpensePeriod';
+import Page from '../../enums/Page.ts';
+import {axiosInstance} from '../../helpers/axios';
+import {formatForChart} from '../../helpers/modifyForDetais.ts';
+import Transaction from '../../interfaces/Transaction.ts';
+import PageSwitch from '../IncomeExpense/PageSwitch.tsx';
+import SingleTransaction from '../IncomeExpense/SingleTransaction.tsx';
+
+const SelectedBkg = 'bg-lime-400 shadow-lg shadow-lime-500/50';
+const DeSelectedBkg = 'bg-lime-800 bg-opacity-60 shadow-lg';
 
 interface data {label: string, value: number, color: string}
 
@@ -24,53 +29,53 @@ const sizing = {
         padding: NaN,
     }
 };
-// const TOTAL = data.map((item) => item.value).reduce((a, b) => a + b, 0);
 
+type item = {
+    color: string
+    data: number
+    endAngle: number
+    formattedValue: string
+    id: string
+    index: number
+    label: string
+    padAngle: number
+    startAngle: number
+    value: number
+}
 
-// const generateRandomColor = () => {
-//     const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-//     return randomColor;
-// };
-
-const Details = () => {
+export const Index = () => {
     const {user} = useUser();
     const [selectedPeriod, setSelectedPeriod] = useState<Period | null>(Period.WEEK);
     const [chartData, setChartData] = useState(data);
-    const [expenses, setExpenses] = useState<null | Expense[]>(null);
+    const [transactions, setTransactions] = useState<null | Transaction[]>(null);
     const [chartPeriod, setChartPeriod] = useState("");
+
+    const sum = transactions && transactions.reduce((a, b) => a + b.amount, 0);
+    const [pageSwitch, setPageSwitch] = useState<Page>(Page.EXPENSE);
+    const isExpensePage = pageSwitch === Page.EXPENSE;
+
     const selectPeriod = (period: Period) => {
         setSelectedPeriod(period);
     }
 
-    const getArcLabel = (params: data) => {
-        if (expenses) {
-            const percent = params.value / expenses.reduce((a, b) => a + b.amount, 0);
-            return `${(percent * 100).toFixed(0)}%`;
-        }
+    const getArcLabel = (item: item): string => {
+        if (sum) return `${((item.value / sum) * 100).toFixed(0)}%`;
+        return '';
     };
 
-    const getUserExpenses = async (period: Period | null) => {
+    const getTransactions = async (period: Period | null) => {
         const params = {
             userId: user?._id,
-            period: period
+            type: pageSwitch,
+            period: period,
+            format : true,
         }
-        const response = await axiosInstance.get(`/expense`, {params});
-        setExpenses(response.data.expenses)
-        const formatted = formatForChart(response.data.expensesByCategory);
-
+        const response = await axiosInstance.get(`/transaction`, {params});
+        const formatted = formatForChart(response.data.formatted);
+  
+        setTransactions(response.data.transactions)
         setChartPeriod(formatDates(response.data.period.startDate, response.data.period.endDate))
         setChartData(formatted);
-    }
-
-    const formatForChart = (data: {[key: string]: number}) => {
-        const modified = Object.keys(data).map((category) => {
-            return {
-                label: category,
-                value: data[category],
-                color: Color[category as typeof Color] ?? '#34a835'
-            };
-        });
-        return modified
     }
 
     const formatDates = (startDate: Date, endDate: Date) => {
@@ -91,21 +96,21 @@ const Details = () => {
     }
 
     useEffect(() => {
-        getUserExpenses(selectedPeriod);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedPeriod]);
+        getTransactions(selectedPeriod);
+
+    }, [selectedPeriod, pageSwitch]);
 
     return (
         <main className="flex flex-col h-screen text-white justify-between bg-slate-900 ">
 
             <div className='flex flex-col gap-5' >
-                <section className="h-24">
-                    <p className="text-center">Welcome section</p>
+                <section className='mt-3' >
+                    <PageSwitch setPageSwitch={setPageSwitch} isExpensePage={isExpensePage} />
                 </section>
 
                 <section className='w-[95%] border border-gray-600 mx-auto rounded-xl' >
                     <div className='flex justify-between p-2' >
-                        <h2 className='text-2xl ' >Expenses</h2>
+                        <h2 className='text-2xl ' >{isExpensePage ? 'Expenses' : 'Incomes'}</h2>
                         <h5 className='text-2xl text-lime-500 font-medium' >$534</h5>
                     </div>
                     <p className='p-2 text-gray-400' >{chartPeriod}</p>
@@ -118,13 +123,14 @@ const Details = () => {
                                     paddingAngle: 10,
                                     cornerRadius: 5,
                                     data: chartData,
-                                    arcLabel: getArcLabel,
+                                    arcLabel: (item) => getArcLabel(item),
                                 },
                             ]}
                             sx={{
                                 [`& .${pieArcLabelClasses.root}`]: {
                                     fill: 'white',
                                     fontSize: 14,
+                                    fontFamily: 'Montserrat',
                                 },
                             }}
                             {...sizing}
@@ -133,6 +139,7 @@ const Details = () => {
                                     labelStyle: {
                                         fontSize: 16,
                                         fontWeight: 500,
+                                        fontFamily: 'Montserrat',
                                         fill: 'white',
                                     },
                                 },
@@ -141,11 +148,11 @@ const Details = () => {
                     </div>
                 </section>
 
-                <section className='flex justify-around' >
+                <section className='flex justify-around bg-lime-700 p-2 rounded-2xl w-11/12 mx-auto' >
                     {[Period.WEEK, Period.MONTH, Period.YEAR].map((label) => {
                         return <p onClick={() => selectPeriod(label)}
                             tabIndex={0}
-                            className={`text-sm py-2 px-4 rounded-2xl bg-lime-500 focus:ring-4 focus:outline-none focus:ring-lime-300`}
+                            className={`${(selectedPeriod == label) ? SelectedBkg : DeSelectedBkg} text-sm py-2 px-3 rounded-2xl focus:ring-2 focus:outline-none focus:ring-lime-300`}
                         >This {label}</p>
                     })}
 
@@ -153,31 +160,9 @@ const Details = () => {
             </div>
 
             <section className="w-full mx-auto h-60 max-h-80 overflow-y-auto" >
-                <p className="text-right text-white pr-3">{selectedPeriod?.toUpperCase()} Expenses:</p>
-                {expenses && expenses.map((expense, i) => {
-                    const date = new Date(expense.date);
-                    const hours = date.getHours();
-                    const minutes = date.getMinutes();
-                    return (
-                        <div key={i} className="w-[95%] m-auto border-b border-gray-500 relative">
-                            <div className="flex justify-between items-center px-6 mb-2 mt-1">
-                                <div className="flex space-x-4 justify-center items-center my-2" >
-                                    <div className=" p-2 bg-lime-500 rounded-lg w-fit m-auto" >
-                                        <span>{getIcon(expense.category)}</span>
-                                    </div>
-                                    <div className="bg-lime-900 w-fit rounded-lg px-2 m-auto" >
-                                        <p className="text-center text-gray-300" >{expense.category}</p>
-                                    </div>
-                                </div>
-
-                                <h3 className="text-white text-lg font-medium" >$ {expense.amount} </h3>
-                            </div>
-                            <div className="flex space-x-2 absolute right-5 top-12" >
-                                <p className="text-gray-600 text-xs text-center" >{`${hours}:${minutes}`}</p>
-                                <p className="text-gray-600 text-xs text-center" >{new Date(expense.date).toLocaleDateString()}</p>
-                            </div>
-                        </div>
-                    )
+                <p className="text-right text-white pr-3">{selectedPeriod + "ly"} {isExpensePage ? 'Expenses' : 'Incomes'}:</p>
+                {transactions && transactions.map((transaction, i) => {
+                    return <SingleTransaction transaction={transaction} key={i} />;
                 })}
             </section>
 
@@ -185,4 +170,3 @@ const Details = () => {
     )
 }
 
-export default Details
