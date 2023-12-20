@@ -1,10 +1,10 @@
-// import express from "express";
-// import chartController from "../controllers/chartController";
-// import verifyJWT from "../middleware/verifyJWT";
+import express from "express";
+import chartController from "../controllers/chartController.js";
+import verifyJWT from "../middleware/verifyJWT.js";
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.route('/')
-//     .get(verifyJWT, chartController.getHomeChart)
+router.route('/')
+    .get(verifyJWT, chartController.getHomeChart)
 
-// export default router;
+export default router;

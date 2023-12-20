@@ -1,19 +1,19 @@
-// import asyncHandler from "express-async-handler";
+import asyncHandler from "express-async-handler";
 
-// const getHomeChart = asyncHandler(async (req, res) => {
+const getHomeChart = asyncHandler(async (req, res) => {
 
-//     const { userId } = req.query;
+    const { userId } = req.query;
 
-//     try {
-      
+    try {
+        return res.status(200).json(userId)
 
-//         // return res.status(200).json(categories);
-//     } catch (error) {
-//         return res.status(400).json({ message: `Error trying to retrieve home chart ${error}` });
-//     }
+     
+    } catch (error) {
+        return res.status(400).json({ message: `Error trying to retrieve home chart ${error}` });
+    }
 
-// });
+});
 
-// export default{
-
-// }
+export default{
+    getHomeChart
+}

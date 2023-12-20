@@ -13,13 +13,14 @@ import FilterCategories from './FilterCategories.tsx';
 import PageSwitch from './PageSwitch.tsx';
 import SingleExpense from './SingleExpense.tsx';
 import useFilteredCats from '../../hooks/useFilteredCats.ts';
-import { customTheme } from '../../helpers/calendarTheme.ts';
+import {customTheme} from '../../helpers/calendarTheme.ts';
 
-const Index = () => {
-    const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
-    const {dailyExpenses, addExpense, amount, setAmount, setSelectedDate} = useExpenses({period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
-
+export const Index = () => {
     const [pageSwitch, setPageSwitch] = useState<Page>(Page.EXPENSE);
+
+    const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
+    const {dailyTransactions, addTransaction, amount, setAmount, setSelectedDate} = useExpenses({type: pageSwitch, period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
+
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();
 
@@ -59,13 +60,13 @@ const Index = () => {
                 <Datepicker theme={customTheme} autoHide onSelectedDateChanged={(d) => setSelectedDate(d)} />
             </section>
 
-            <AddTransaction addExpense={addExpense} />
+            <AddTransaction addExpense={() => addTransaction(pageSwitch)} />
 
             <section className={`mb-4 w-full mx-auto h-60 max-h-80 overflow-y-auto`} >
                 <p className="text-right text-stone-400 pr-3">{isExpensePage ? 'Daily Expenses:' : 'Monthly Income'}</p>
 
-                {(isExpensePage && dailyExpenses) && dailyExpenses.map((expense, i) => {
-                    return <SingleExpense expense={expense} key={i} />;
+                {dailyTransactions && dailyTransactions.map((transaction, i) => {
+                    return <SingleExpense transaction={transaction} key={i} />;
                 })}
 
             </section>
@@ -74,5 +75,3 @@ const Index = () => {
         </main >
     )
 }
-
-export default Index

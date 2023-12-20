@@ -1,35 +1,37 @@
 import asyncHandler from "express-async-handler";
 import Expense from "../models/Expense.js";
+import Transaction from "../models/Transaction.js";
 // const moment = require('moment');
 import moment from 'moment';
 import mongoose from "mongoose";
 
-const createNewExpense = asyncHandler(async (req, res) => {
+const createTransaction = asyncHandler(async (req, res) => {
 
-  const { user, description, amount, date, category } = req.body;
+  const { user, description, amount, date, category, type } = req.body;
 
   try {
 
-    const newExpense = new Expense({
+    const transaction = new Transaction({
       user: user._id,
       description: description,
+      type: type,
       amount: amount,
       date: date,
       category: category,
     });
 
 
-    const savedExpense = await newExpense.save();
+    const savedTransaction = await transaction.save();
 
-    return res.status(200).json(savedExpense);
+    return res.status(200).json(savedTransaction);
   } catch (error) {
     return res.status(400).json({ message: 'Error creating expense:', error });
   }
 })
 
-const getUserExpenses = asyncHandler(async (req, res) => {
+const getUserTransactions = asyncHandler(async (req, res) => {
 
-  const { userId, period } = req.query;
+  const { userId, period, type } = req.query;
   const currentDate = new Date();
   let startDate = new Date(currentDate);
   let endDate;
@@ -58,33 +60,35 @@ const getUserExpenses = asyncHandler(async (req, res) => {
     endDate = new Date(currentDate.getFullYear(), 11, 31);
   } else if (!period) {
     try {
-      const allExpenses = await Expense.find({ user: userId });
-      return res.status(200).json(allExpenses);
+      const allTransactions = await Transaction.find({ user: userId, type: type });
+      return res.status(200).json(allTransactions);
     } catch (error) {
-      return res.status(400).json({ message: 'Error retrieving all expenses:', error });
+      return res.status(400).json({ message: `Error retrieving all transactions of type: ${type}`, error });
     }
   } else {
     return res.status(400).json({ message: `Invalid period provided: ${period}` });
   }
 
   try {
+    console.log(type);
     const period = { startDate, endDate };
-    const expenses = await Expense.find({
+    const transactions = await Transaction.find({
       user: userId,
+      type: type,
       date: { $gte: startDate, $lte: endDate ?? currentDate }, // Filter expenses within the specified period
     });
 
-    const expensesByCategory = expenses.reduce((acc, expense) => {
-      if (!acc[expense.category]) {
-        acc[expense.category] = 0;
-      }
-      acc[expense.category] += expense.amount;
-      return acc;
-    }, {});
+    // const expensesByCategory = expenses.reduce((acc, expense) => {
+    //   if (!acc[expense.category]) {
+    //     acc[expense.category] = 0;
+    //   }
+    //   acc[expense.category] += expense.amount;
+    //   return acc;
+    // }, {});
 
-    return res.status(200).json({ expenses, expensesByCategory, period });
+    return res.status(200).json({ transactions, period });
   } catch (error) {
-    return res.status(400).json({ message: 'Error retrieving expenses:', error });
+    return res.status(400).json({ message: `Error retrieving transactions of type: ${type}`, error });
   }
 })
 
@@ -126,7 +130,7 @@ const getExpensesByMonth = asyncHandler(async (req, res) => {
 
 
 export default {
-  createNewExpense,
-  getUserExpenses,
+  createTransaction,
+  getUserTransactions,
   getExpensesByMonth,
 }

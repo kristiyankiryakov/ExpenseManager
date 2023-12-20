@@ -4,8 +4,8 @@ import {BarChart} from "@mui/x-charts"
 import useHomeChart from "../hooks/useHomeChart.ts";
 import {dataset, chartSetting} from "../helpers/chartSettings.ts";
 
-const IncomeVsExpenses = () => {
-    // const chart = useHomeChart(dataset);
+const HomeChart = () => {
+    useHomeChart(dataset);
 
     return (
         <main className="flex-col w-[95%] mx-auto">
@@ -36,4 +36,4 @@ const IncomeVsExpenses = () => {
     )
 }
 
-export default IncomeVsExpenses 
+export default HomeChart 

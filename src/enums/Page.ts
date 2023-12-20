@@ -1,6 +1,6 @@
 export enum Page {
-    INCOME = "Income",
-    EXPENSE = "Expense"
+    INCOME = "income",
+    EXPENSE = "expense"
 }
 
 export default Page;

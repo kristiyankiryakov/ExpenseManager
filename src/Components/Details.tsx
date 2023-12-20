@@ -2,7 +2,7 @@ import {PieChart, pieArcLabelClasses} from '@mui/x-charts/PieChart';
 import Period from '../enums/ExpensePeriod';
 import {useEffect, useState} from 'react';
 import {useUser} from '../context/userContext';
-import Expense from '../interfaces/Expense';
+import Expense from '../interfaces/Transaction.ts';
 import {axiosInstance} from '../helpers/axios';
 import {getIcon} from '../helpers/icons';
 import Color from "../enums/CategoryColor.ts";

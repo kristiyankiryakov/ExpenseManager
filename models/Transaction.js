@@ -1,9 +1,14 @@
 import mongoose from "mongoose";
 
-const incomeSchema = new mongoose.Schema({
+const transactionSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+        required: true,
+    },
+    type: {
+        type: String,
+        enum: ['expense', 'income'],
         required: true,
     },
     description: {
@@ -32,8 +37,8 @@ const incomeSchema = new mongoose.Schema({
 
 });
 
-incomeSchema.index({ date: 1 });
+transactionSchema.index({ date: 1 });
 
-const Income = mongoose.model('Income', incomeSchema);
+const Transaction = mongoose.model('Transaction', transactionSchema);
 
-export default Income;
+export default Transaction;

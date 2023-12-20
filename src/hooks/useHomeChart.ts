@@ -19,10 +19,22 @@ function useHomeChart(dataset: DataItem[]) {
     const [chart, setChart] = useState(dataset);
 
     useEffect(() => {
-        (async()=>{
-            
-        })();
-        // getChart();
+        const getChart = async () => {
+            const params = {
+                userId: user?._id,
+            }
+            try {
+                const chart = await axiosInstance.get('/chart', {params});
+                // console.log(chart);
+                
+            } catch (err) {
+                console.log(err);
+                return null;
+            }
+        }
+
+        getChart();
+
     }, [])
 
     // const getChart = async () => {

@@ -4,7 +4,7 @@ import verifyJWT from '../middleware/verifyJWT.js';
 import incomeController from "../controllers/incomeController.js"
 
 router.route('/')
-    .post(verifyJWT, incomeController.saveIncome)
+    .post(verifyJWT, incomeController.createNewIncome)
     .get(verifyJWT, incomeController.getYearlyIncomeByMonth)
 
 
