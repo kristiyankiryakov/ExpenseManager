@@ -12,19 +12,17 @@ import CreateCategoryBtn from './CreateCategoryBtn.tsx';
 import FilterCategories from './FilterCategories.tsx';
 import PageSwitch from './PageSwitch.tsx';
 import SingleTransaction from "./SingleTransaction.tsx"
-
 import useFilteredCats from '../../hooks/useFilteredCats.ts';
 import {customTheme} from '../../helpers/calendarTheme.ts';
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
 
 export const Index = () => {
     const [pageSwitch, setPageSwitch] = useState<Page>(Page.EXPENSE);
-
     const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
-    const {transactions : dailyTransactions, addTransaction, amount, setAmount, setSelectedDate} = useTransactions({type: pageSwitch, period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
-
+    const {transactions: dailyTransactions, addTransaction, amount, setAmount, setSelectedDate} = useTransactions({type: pageSwitch, period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();
-
     const filteredCats = useFilteredCats({userCategories, filter});
     const isExpensePage = pageSwitch === Page.EXPENSE;
 
@@ -44,10 +42,10 @@ export const Index = () => {
                     {filteredCats && filteredCats.map((category, i) => {
                         return (
                             <div onClick={() => selectCategory(i)} id="2344" key={category.name} className="flex-col space-y-1 justify-center items-center my-2" >
-                                <div tabIndex={0} className={`p-2 rounded-lg w-fit m-auto bg-lime-500 focus:ring-4 focus:outline-none focus:ring-lime-300`} >
+                                <div tabIndex={0} className={`p-2 rounded-lg w-fit m-auto bg-lime-500 focus:ring-2 focus:outline-none focus:ring-lime-300`} >
                                     <span>{getIcon(category.name)}</span>
                                 </div>
-                                <div className="bg-lime-700 w-fit rounded-lg px-2 m-auto" >
+                                <div className={`bg-lime-700 w-fit rounded-lg px-2 m-auto ${selectedCategory == i && 'bg-lime-500 shadow-md shadow-lime-300'}`} >
                                     <p className="text-center text-gray-300" >{category.name}</p>
                                 </div>
                             </div>
@@ -64,7 +62,7 @@ export const Index = () => {
             <AddTransaction addExpense={() => addTransaction(pageSwitch)} />
 
             <section className={`mb-4 w-full mx-auto h-60 max-h-80 overflow-y-auto`} >
-                <p className="text-right text-stone-400 pr-3">{isExpensePage ? 'Daily Expenses:' : 'Monthly Income'}</p>
+                <p className="text-right text-stone-400 pr-3">{isExpensePage ? 'Daily Expenses:' : 'Daily Income'}</p>
 
                 {dailyTransactions && dailyTransactions.map((transaction, i) => {
                     return <SingleTransaction transaction={transaction} key={i} />;
@@ -73,6 +71,7 @@ export const Index = () => {
             </section>
 
             <CategoryModal openModal={openModal} setOpenModal={setOpenModal} addCategory={addCategory} setNewCategory={setNewCategory} />
+            <ToastContainer />
         </main >
     )
 }

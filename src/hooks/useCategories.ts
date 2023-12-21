@@ -44,7 +44,7 @@ const useCategories = () => {
 
 
     const selectCategory = (index: number) => {
-        selectedCategory == index ? setSelectedCategory(null) : setSelectedCategory(index);
+        setSelectedCategory(index);
     }
 
     return {userCategories, selectedCategory, setSelectedCategory, selectCategory, setNewCategory, addCategory};

@@ -8,6 +8,7 @@ import moment from "moment";
 import Category from "../interfaces/Category";
 import Page from "../enums/Page";
 import {chartItem, formatDates, formatForChart} from "../helpers/DeitalsPageHelper";
+import {toast} from "react-toastify";
 
 type Props = {
     type: Page
@@ -54,21 +55,42 @@ const useTransactions = ({type, period, format, userCategories, selectedCategory
     }, [key, user?._id, period, type, format]);
 
     const addTransaction = async (type: Page) => {
-        if (typeof selectedCategory === 'number' && selectedDate && userCategories) {
-            setSelectedDate(current => moment(current));
-            const payload = {user: user, date: selectedDate, amount, category: userCategories[selectedCategory].name, type}
-            await axiosInstance.post('/transaction', payload);
-
-            // modify to fetch incomes or expenses based on type
-            setKey((prev) => prev + 1);
-            setSelectedCategory && setSelectedCategory(null);
-            setAmount(null);
-        } else {
-            console.log('set up error handling')
+        if (!amount || amount <= 0) {
+            return toast.warn("Please enter amount more than 0", {
+                position: toast.POSITION.TOP_RIGHT,
+                theme: "dark",
+                autoClose: 1500,
+                toastId: "add-amount"
+            });
         }
+
+        if (typeof selectedCategory !== 'number' || !userCategories) {
+            return toast.warn("Please select category", {
+                position: toast.POSITION.TOP_RIGHT,
+                theme: "dark",
+                autoClose: 1500,
+                toastId: "add-cat"
+            });
+        }
+
+        setSelectedDate(current => moment(current));
+        const payload = {user: user, date: selectedDate, amount, category: userCategories[selectedCategory].name, type}
+        await axiosInstance.post('/transaction', payload);
+
+        // modify to fetch incomes or expenses based on type
+        setKey((prev) => prev + 1);
+        setSelectedCategory && setSelectedCategory(null);
+        setAmount(null);
+
+        toast.success("Transaction added successfully!", {
+            position: toast.POSITION.TOP_RIGHT,
+            theme: "dark",
+            autoClose: 500,
+            toastId: "add-succ"
+        });
     };
 
-    return {transactions, addTransaction, amount, setAmount, setSelectedDate, chartData ,chartPeriod};
+    return {transactions, addTransaction, amount, setAmount, setSelectedDate, chartData, chartPeriod};
 }
 
 export default useTransactions

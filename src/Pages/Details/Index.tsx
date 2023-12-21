@@ -67,8 +67,8 @@ export const Index = () => {
                 </section>
 
                 <section className='flex justify-around bg-lime-700 p-2 rounded-2xl w-11/12 mx-auto' >
-                    {[Period.WEEK, Period.MONTH, Period.YEAR].map((label) => {
-                        return <p onClick={() => setSelectedPeriod(label)}
+                    {[Period.WEEK, Period.MONTH, Period.YEAR].map((label, i) => {
+                        return <p key={label + i} onClick={() => setSelectedPeriod(label)}
                             tabIndex={0}
                             className={`${(selectedPeriod == label) ? SelectedBkg : DeSelectedBkg} text-sm py-2 px-3 rounded-2xl focus:ring-2 focus:outline-none focus:ring-lime-300`}
                         >This {label}</p>
