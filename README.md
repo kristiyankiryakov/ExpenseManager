@@ -1,4 +1,4 @@
-![image](https://github.com/kristiyankiryakov/ExpenseManager/assets/126320553/e857023f-116c-4e8c-b9e0-62e37e8a6161)# FinVista - Financial Tracker
+FinVista - Financial Tracker
 
 ## Overview
 
