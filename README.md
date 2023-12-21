@@ -1,4 +1,4 @@
-FinVista - Financial Tracker
+# FinVista - Financial Tracker
 
 ## Overview
 
@@ -20,7 +20,7 @@ FinVista is a React TypeScript project designed to help you efficiently track yo
 
 - **Persistent Authentication with Cookies:** FinVista prioritizes security and user convenience by implementing persistent authentication using cookies. Users can enjoy a seamless experience without frequent logins.
 
-##Quick Look
+## Quick Look
 
 ![image](https://github.com/kristiyankiryakov/ExpenseManager/assets/126320553/3f787cec-e677-4d7d-b23a-a28ff30132c8)
 
