@@ -8,7 +8,7 @@ const HomeChart = () => {
     const chart = useHomeChart(dataset);
 
     return (
-        <main className="flex-col w-[95%] mx-auto">
+        <main className="w-[95%] mx-auto">
             <section className=" border border-gray-600 rounded-xl" >
                 <BarChart
                     dataset={chart ?? dataset}
