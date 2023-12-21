@@ -1,4 +1,4 @@
-import HomeChart from '../../Components/HomeChart'
+import HomeChart from './HomeChart'
 
 // type Props = {}
 

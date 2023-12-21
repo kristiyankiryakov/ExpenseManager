@@ -29,7 +29,7 @@ export const customTheme = {
             "button": {
                 "base": "w-full rounded-lg px-5 py-2 text-center text-sm font-medium focus:outline-none focus:ring-4 focus:ring-lime-300",
                 "today": "bg-lime-500 text-white hover:bg-lime-800 dark:bg-lime-600 dark:hover:bg-lime-700",
-                "clear": "border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 dark:border-lime-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+                "clear": "border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
             }
         }
     },

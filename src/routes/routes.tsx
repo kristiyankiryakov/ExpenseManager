@@ -9,7 +9,7 @@ import Protected from "../Components/Protected";
 import Register from "../Components/Register";
 import {UserProvider} from '../context/userContext';
 import Navigation from '../Components/Navigation';
-import Profile from '../Components/Profile';
+import {Index as Profile} from '../Pages/Profile/Index';
 
 const darkTheme = createTheme({
     palette: {
@@ -35,6 +35,7 @@ export const router = createBrowserRouter(
             <Route path="/register" element={<Register />} />
             <Route path="/details" element={<Protected><Details /></Protected>} />
             <Route path="/profile" element={<Protected><Profile /></Protected>} />
+            <Route path="*" element={<h1>Wrong path component</h1>} />
         </Route>
     )
 )

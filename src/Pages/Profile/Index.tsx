@@ -1,5 +1,5 @@
 
-const Profile = () => {
+export const Index = () => {
 
     return (
         <main className="flex-col" >
@@ -8,4 +8,3 @@ const Profile = () => {
     )
 }
 
-export default Profile

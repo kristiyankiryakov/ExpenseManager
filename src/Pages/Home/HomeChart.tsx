@@ -1,8 +1,8 @@
 
 // import {AiOutlineDownload, AiOutlineUpload} from "react-icons/ai";
 import {BarChart} from "@mui/x-charts"
-import useHomeChart from "../hooks/useHomeChart.ts";
-import {dataset, chartSetting} from "../helpers/chartSettings.ts";
+import useHomeChart from "../../hooks/useHomeChart.ts";
+import {dataset, chartSetting} from "../../helpers/chartSettings.ts";
 
 const HomeChart = () => {
     const chart = useHomeChart(dataset);

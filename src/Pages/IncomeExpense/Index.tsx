@@ -16,6 +16,8 @@ import useFilteredCats from '../../hooks/useFilteredCats.ts';
 import {customTheme} from '../../helpers/calendarTheme.ts';
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
+import moment from 'moment';
+import CurrentDate from './CurrentDate.tsx';
 
 export const Index = () => {
     const [pageSwitch, setPageSwitch] = useState<Page>(Page.EXPENSE);
@@ -62,7 +64,12 @@ export const Index = () => {
             <AddTransaction addExpense={() => addTransaction(pageSwitch)} />
 
             <section className={`mb-4 w-full mx-auto h-60 max-h-80 overflow-y-auto`} >
-                <p className="text-right text-stone-400 pr-3">{isExpensePage ? 'Daily Expenses:' : 'Daily Income'}</p>
+                <div className='flex items-center justify-between w-[90%] mx-auto text-gray-500' >
+                    <h2 className=' text-lg font-medium' >Overview</h2>
+                    <CurrentDate />
+                </div>
+
+                {/* <p className="text-right text-stone-400 pr-3">{isExpensePage ? 'Daily Expenses:' : 'Daily Income'}</p> */}
 
                 {dailyTransactions && dailyTransactions.map((transaction, i) => {
                     return <SingleTransaction transaction={transaction} key={i} />;
