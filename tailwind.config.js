@@ -6,7 +6,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'home-background': "url('/public/home-background.jpg')",
+      }
+    },
   },
   plugins: [
     require('flowbite/plugin')

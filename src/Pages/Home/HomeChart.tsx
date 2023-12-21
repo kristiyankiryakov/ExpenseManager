@@ -1,8 +1,8 @@
 
 // import {AiOutlineDownload, AiOutlineUpload} from "react-icons/ai";
 import {BarChart} from "@mui/x-charts"
-import useHomeChart from "../../hooks/useHomeChart.ts";
-import {dataset, chartSetting} from "../../helpers/chartSettings.ts";
+import {chartSetting, dataset} from "../../helpers/chartSettings";
+import useHomeChart from "../../hooks/useHomeChart";
 
 const HomeChart = () => {
     const chart = useHomeChart(dataset);
@@ -19,11 +19,10 @@ const HomeChart = () => {
                     ]}
                     slotProps={{
                         legend: {
-
                             labelStyle: {
                                 fontSize: 16,
                                 fontWeight: 500,
-                                fill: '#f1f1f1 ',
+                                fill: 'white',
                             },
                         },
                     }}

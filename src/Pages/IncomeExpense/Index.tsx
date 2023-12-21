@@ -1,23 +1,22 @@
 import {Datepicker} from 'flowbite-react';
 import {useState} from "react";
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Period from '../../enums/ExpensePeriod.ts';
 import Page from '../../enums/Page.ts';
+import {customTheme} from '../../helpers/calendarTheme.ts';
 import {getIcon} from '../../helpers/icons.tsx';
 import useCategories from "../../hooks/useCategories.ts";
+import useFilteredCats from '../../hooks/useFilteredCats.ts';
 import useTransactions from "../../hooks/useTransactions.ts";
 import AddTransaction from './AddTransaction.tsx';
 import Amount from './Amount.tsx';
 import CategoryModal from './CategoryModal.tsx';
 import CreateCategoryBtn from './CreateCategoryBtn.tsx';
+import CurrentDate from './CurrentDate.tsx';
 import FilterCategories from './FilterCategories.tsx';
 import PageSwitch from './PageSwitch.tsx';
-import SingleTransaction from "./SingleTransaction.tsx"
-import useFilteredCats from '../../hooks/useFilteredCats.ts';
-import {customTheme} from '../../helpers/calendarTheme.ts';
-import {ToastContainer} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"
-import moment from 'moment';
-import CurrentDate from './CurrentDate.tsx';
+import SingleTransaction from "./SingleTransaction.tsx";
 
 export const Index = () => {
     const [pageSwitch, setPageSwitch] = useState<Page>(Page.EXPENSE);
