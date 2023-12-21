@@ -14,7 +14,7 @@ FinVista is a React TypeScript project designed to help you efficiently track yo
 
 - **Dark Theme:** FinVista boasts a sophisticated dark theme, ensuring a visually pleasing and comfortable experience during extended usage.
 
- **Mobile-Only Design (for now):** Due to challenges in finding a suitable design, FinVista is optimized for mobile devices. Desktop design may be added in future updates.
+- **Mobile-Only Design (for now):** Due to challenges in finding a suitable design, FinVista is optimized for mobile devices. Desktop design may be added in future updates.
 
 - **Backend with Express and MongoDB:** The application features a robust backend built with Express.js and MongoDB, ensuring efficient data storage and retrieval.
 
