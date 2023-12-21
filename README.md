@@ -1,27 +1,12 @@
-# React + TypeScript + Vite
+FinVista - Financial Tracker
+Overview
+FinVista is a React TypeScript project designed to help you efficiently track your finances. It provides a user-friendly interface for adding and managing your expenses and incomes, along with insightful statistics presented through charts. The application is crafted with a sleek dark theme for a modern and comfortable user experience.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Features
+Expense and Income Tracking: Easily add and manage your financial transactions to keep a comprehensive record.
 
-Currently, two official plugins are available:
+Detailed Statistics: View detailed statistics about your financial activities, presented in various time periods to help you analyze your spending and income patterns.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Interactive Charts: Visualize your financial data through interactive charts, providing a clear overview of your financial trends.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Dark Theme: FinVista boasts a sophisticated dark theme, ensuring a visually pleasing and comfortable experience during extended usage.
