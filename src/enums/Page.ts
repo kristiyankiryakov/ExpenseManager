@@ -3,4 +3,7 @@ export enum Page {
     EXPENSE = "expense"
 }
 
-export default Page;
+export enum ComponentPage {
+    IncomeExpense = "incomeExpense",
+    ChartDetails = "chartDetails"
+}

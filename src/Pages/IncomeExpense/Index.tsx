@@ -3,12 +3,13 @@ import {useState} from "react";
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Period from '../../enums/ExpensePeriod.ts';
-import Page from '../../enums/Page.ts';
+import {ComponentPage} from '../../enums/Page.ts';
 import {customTheme} from '../../helpers/calendarTheme.ts';
 import {getIcon} from '../../helpers/icons.tsx';
 import useCategories from "../../hooks/useCategories.ts";
 import useFilteredCats from '../../hooks/useFilteredCats.ts';
 import useTransactions from "../../hooks/useTransactions.ts";
+import typeStore from '../../stores/typeStore.tsx';
 import AddTransaction from './AddTransaction.tsx';
 import Amount from './Amount.tsx';
 import CategoryModal from './CategoryModal.tsx';
@@ -17,20 +18,22 @@ import CurrentDate from './CurrentDate.tsx';
 import FilterCategories from './FilterCategories.tsx';
 import PageSwitch from './PageSwitch.tsx';
 import SingleTransaction from "./SingleTransaction.tsx";
+import transactionStore from '../../stores/transactionStore.tsx';
 
 export const Index = () => {
-    const [pageSwitch, setPageSwitch] = useState<Page>(Page.EXPENSE);
+    const {incomeExpenseType: type} = typeStore();
+
     const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
-    const {transactions: dailyTransactions, addTransaction, amount, setAmount, setSelectedDate} = useTransactions({type: pageSwitch, period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
+    const {selectedDate, addTransactionMutation, amount, setAmount, setSelectedDate} = useTransactions({type, period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
+    const {transactions: dailyTransactions} = transactionStore();
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();
     const filteredCats = useFilteredCats({userCategories, filter});
-    const isExpensePage = pageSwitch === Page.EXPENSE;
 
     return (
         <main className="bg-slate-900 flex flex-col h-screen justify-between">;
 
-            <PageSwitch setPageSwitch={setPageSwitch} isExpensePage={isExpensePage} />
+            <PageSwitch page={ComponentPage.IncomeExpense} />
 
             <div className="flex-col space-y-10" >
 
@@ -60,7 +63,7 @@ export const Index = () => {
                 <Datepicker theme={customTheme} autoHide onSelectedDateChanged={(d) => setSelectedDate(d)} />
             </section>
 
-            <AddTransaction addExpense={() => addTransaction(pageSwitch)} />
+            <AddTransaction date={selectedDate} amount={amount} addTransaction={addTransactionMutation} />
 
             <section className={`mb-4 w-full mx-auto h-60 max-h-80 overflow-y-auto`} >
                 <div className='flex items-center justify-between w-[90%] mx-auto text-gray-500' >

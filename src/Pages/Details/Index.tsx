@@ -1,29 +1,34 @@
-import {PieChart, pieArcLabelClasses} from '@mui/x-charts/PieChart';
+// import {PieChart, pieArcLabelClasses} from '@mui/x-charts/PieChart';
 import {useMemo, useState} from 'react';
 import Period from '../../enums/ExpensePeriod';
-import Page from '../../enums/Page.ts';
-import {DeSelectedBkg, SelectedBkg, dummy, getArcLabel, sizing} from '../../helpers/DeitalsPageHelper.ts';
+import {ComponentPage, Page} from '../../enums/Page.ts';
+// import {DeSelectedBkg, SelectedBkg, dummy, getArcLabel, sizing} from '../../helpers/ChartDetailsHelper.ts';
+import {DeSelectedBkg, SelectedBkg} from '../../helpers/ChartDetailsHelper.ts';
 import useTransactions from '../../hooks/useTransactions.ts';
 import PageSwitch from '../IncomeExpense/PageSwitch.tsx';
 import SingleTransaction from '../IncomeExpense/SingleTransaction.tsx';
+import typeStore from '../../stores/typeStore.tsx';
+import transactionStore from '../../stores/transactionStore.tsx';
 
 export const Index = () => {
-    const [pageSwitch, setPageSwitch] = useState<Page>(Page.EXPENSE);
+    const {detailsChartType: type} = typeStore();
+    const isExpensePage = type === Page.EXPENSE;
+
     const [selectedPeriod, setSelectedPeriod] = useState<Period>(Period.WEEK);
-    const {transactions, chartData, chartPeriod} = useTransactions({period: selectedPeriod, type: pageSwitch, format: true});
+    useTransactions({period: selectedPeriod, type, format: true});
+    const {transactions} = transactionStore();
 
     const sum = useMemo(() => {
         return transactions ? transactions.reduce((a, b) => a + b.amount, 0) : 0;
     }, [transactions]);
 
-    const isExpensePage = pageSwitch === Page.EXPENSE;
 
     return (
         <main className="flex flex-col h-screen text-white justify-between bg-slate-900 ">
 
             <div className='flex flex-col gap-5' >
                 <section className='mt-3' >
-                    <PageSwitch setPageSwitch={setPageSwitch} isExpensePage={isExpensePage} />
+                    <PageSwitch page={ComponentPage.ChartDetails} />
                 </section>
 
                 <section className='w-[95%] border border-gray-600 mx-auto rounded-xl' >
@@ -31,9 +36,9 @@ export const Index = () => {
                         <h2 className='text-2xl ' >{isExpensePage ? 'Expenses' : 'Incomes'}</h2>
                         <h5 className='text-2xl text-lime-500 font-medium' >${sum}</h5>
                     </div>
-                    <p className='p-2 text-gray-400' >{chartPeriod}</p>
+                    {/* <p className='p-2 text-gray-400' >{chartPeriod}</p> */}
                     <div className='flex' >
-                        <PieChart
+                        {/* <PieChart
                             series={[
                                 {
                                     innerRadius: 25,
@@ -62,7 +67,7 @@ export const Index = () => {
                                     },
                                 },
                             }}
-                        />
+                        /> */}
                     </div>
                 </section>
 
