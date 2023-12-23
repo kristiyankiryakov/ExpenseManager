@@ -1,9 +1,9 @@
-import {useUser} from "../../context/userContext"
+import useUserStore from "../../stores/userStore"
 import HomeChart from "../Home/HomeChart"
 
 export const Index = () => {
 
-    const {user} = useUser();
+    const user = useUserStore((store) => store.user);
 
     return (
         <div className='flex flex-col h-screen justify-between' >

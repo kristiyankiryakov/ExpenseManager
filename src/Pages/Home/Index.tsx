@@ -1,9 +1,8 @@
-import {useUser} from '../../context/userContext';
-
-// type Props = {}
+// import useUserStore from '../../stores/userStore';
 
 export const Index = () => {
-    const {user} = useUser();
+
+    // const user = useUserStore((state) => state.user);
 
     return (
         <div className=' flex flex-col justify-between h-screen text-white' >

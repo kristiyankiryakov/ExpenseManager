@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
-import {useUser} from "../context/userContext";
 import {axiosInstance} from "../helpers/axios";
 import Category from "../interfaces/Category";
+import useUserStore from "../stores/userStore";
 
 const useCategories = () => {
     const [userCategories, setUserCategories] = useState<null | Category[]>(null);
@@ -9,7 +9,7 @@ const useCategories = () => {
     const [newCategory, setNewCategory] = useState("");
     const [fetchNewCategory, setFetchNewCategory] = useState(false);
 
-    const {user} = useUser();
+    const user = useUserStore((state) => state.user);
     const params = {userId: user?._id}
 
     useEffect(() => {

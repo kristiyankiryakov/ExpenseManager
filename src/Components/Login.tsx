@@ -2,11 +2,11 @@ import {useState} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
-import {useUser} from '../context/userContext';
 import {setAuthorizationToken} from "../helpers/axios";
+import useUserStore from "../stores/userStore";
 
 const Login = () => {
-    const {setUser} = useUser();
+    const setUser = useUserStore((state) => state.setUser);
     const [userData, setUserData] = useState({username: '', password: ''});
     const navigate = useNavigate();
     const login = async () => {

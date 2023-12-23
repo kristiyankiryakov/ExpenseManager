@@ -7,7 +7,7 @@ import {Index as Details} from '../Pages/Details/Index';
 import Login from "../Components/Login";
 import Protected from "../Components/Protected";
 import Register from "../Components/Register";
-import {UserProvider} from '../context/userContext';
+// import {UserProvider} from '../context/userContext';
 import Navigation from '../Components/Navigation';
 import {Index as Profile} from '../Pages/Profile/Index';
 
@@ -31,7 +31,7 @@ const Root = () => {
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route path="/" element={<ThemeProvider theme={darkTheme} > <UserProvider><Root /></UserProvider> </ThemeProvider>} >
+        <Route path="/" element={<ThemeProvider theme={darkTheme} ><Root /></ThemeProvider>} >
             <Route index element={<Protected><Home /></Protected>} />
             <Route path="/add" element={<Protected><IncomeExpense /></Protected>} />
             <Route path="/login" element={<Login />} />

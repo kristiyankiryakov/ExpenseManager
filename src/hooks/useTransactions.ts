@@ -3,12 +3,12 @@ import {useEffect, useState} from "react";
 import Transaction from "../interfaces/Transaction";
 import Period from "../enums/ExpensePeriod";
 import {axiosInstance} from "../helpers/axios";
-import {useUser} from "../context/userContext";
 import moment from "moment";
 import Category from "../interfaces/Category";
 import Page from "../enums/Page";
 import {chartItem, formatDates, formatForChart} from "../helpers/DeitalsPageHelper";
 import {toast} from "react-toastify";
+import useUserStore from "../stores/userStore";
 
 type Props = {
     type: Page
@@ -20,7 +20,7 @@ type Props = {
 }
 
 const useTransactions = ({type, period, format, userCategories, selectedCategory, setSelectedCategory}: Props) => {
-    const {user} = useUser();
+    const user = useUserStore((state) => state.user);
     const [key, setKey] = useState(0);
     const [transactions, setTransactions] = useState<null | Transaction[]>(null);
     const [amount, setAmount] = useState<null | number>(null);

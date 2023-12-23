@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect, useState} from "react";
 import {axiosInstance} from "../helpers/axios";
-import {useUser} from "../context/userContext";
+
 import {DataItem} from "../helpers/chartSettings";
 import Page from "../enums/Page";
+import useUserStore from "../stores/userStore";
 
 const months = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -17,7 +18,7 @@ type transactionForMonth = {
 }
 
 function useHomeChart(dataset: DataItem[]) {
-    const {user} = useUser();
+    const user = useUserStore((store) => store.user);
     const [chart, setChart] = useState(dataset);
 
     useEffect(() => {
@@ -40,7 +41,7 @@ function useHomeChart(dataset: DataItem[]) {
                     if (incomeForMonth) {
                         temp.income = incomeForMonth.total;
                     }
-                    
+
                     result.push(temp);
 
                 });
