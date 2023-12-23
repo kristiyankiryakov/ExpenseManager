@@ -10,7 +10,7 @@ type fetchTransactionParams = {
     userId: string | undefined
     period: Period
     type: Page
-    format: boolean | undefined
+    // format: boolean | undefined
 }
 
 export type AddTransactionType = {

@@ -19,8 +19,7 @@ type Props = {
     setSelectedCategory?: React.Dispatch<React.SetStateAction<number | null>>
 }
 
-
-const useTransactions = ({type, period, format, userCategories, selectedCategory, setSelectedCategory}: Props) => {
+const useTransactions = ({type, period, userCategories, selectedCategory, setSelectedCategory}: Props) => {
     const user = useUserStore((state) => state.user);
     const queryClient = useQueryClient();
     const {setTransactions} = transactionStore();
@@ -30,17 +29,14 @@ const useTransactions = ({type, period, format, userCategories, selectedCategory
     // const [chartData, setChartData] = useState<null | chartItem[]>(null);
     // const [chartPeriod, setChartPeriod] = useState("");
 
-
-
     const {data: transactions} = useQuery({
-        queryKey: ['transactions', {userId: user?._id, period, type, format}],
-        queryFn: () => fetchTransactions({userId: user?._id, period, type, format, }),
+        queryKey: ['transactions', {userId: user?._id, period, type}],
+        queryFn: () => fetchTransactions({userId: user?._id, period, type}),
     });
 
     useEffect(() => {
         transactions && setTransactions(transactions);
     }, [transactions])
-
 
     const {mutateAsync: addTransactionMutation} = useMutation({
         mutationFn: addTransaction,
@@ -51,8 +47,7 @@ const useTransactions = ({type, period, format, userCategories, selectedCategory
         },
     })
 
-
     return {amount, setAmount, setSelectedDate, addTransactionMutation, selectedDate, userCategories, selectedCategory, };
 }
 
-export default useTransactions
+export default useTransactions;

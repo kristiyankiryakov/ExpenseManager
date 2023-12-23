@@ -1,3 +1,6 @@
+import Period from "../enums/ExpensePeriod"
+import {Page} from "../enums/Page"
+import {axiosInstance} from "./axios"
 
 export type item = {
     color: string
@@ -18,7 +21,7 @@ export type chartItem = {
     color: string
 }
 
-export const formatDates = (startDate: Date, endDate: Date) => {
+export const formatDates = (startDate: Date, endDate: Date): string => {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
@@ -74,8 +77,28 @@ export const dummy = [
     {label: 'Group D', value: 200, color: '#FF8042'},
 ];
 
-export const getArcLabel = (item: item, sum:number): string => {
+export const getArcLabel = (item: item, sum: number): string => {
     if (sum) return `${((item.value / sum) * 100).toFixed(0)}%`;
     return '';
 };
+
+type fetchChartDataParams = {
+    userId: string | undefined
+    period: Period
+    type: Page
+    format: boolean
+}
+
+export const fetchChartData = async (params: fetchChartDataParams): Promise<{chartData: chartItem[], chartPeriod: string} | null> => {
+    try {
+        const response = await axiosInstance.get(`/transaction`, {params});
+        const chartData = formatForChart(response.data.formatted);
+        const chartPeriod = formatDates(response.data.period.startDate, response.data.period.endDate)
+
+        return {chartData, chartPeriod}
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
 
