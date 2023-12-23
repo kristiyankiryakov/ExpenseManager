@@ -1,27 +1,33 @@
-# React + TypeScript + Vite
+# FinVista - Financial Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+FinVista is a React TypeScript project designed to help you efficiently track your finances. It provides a user-friendly interface for adding and managing your expenses and incomes, along with insightful statistics presented through charts. The application is crafted with a sleek dark theme for a modern and comfortable user experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Expense and Income Tracking:** Easily add and manage your financial transactions to keep a comprehensive record.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Detailed Statistics:** View detailed statistics about your financial activities, presented in various time periods to help you analyze your spending and income patterns.
 
-- Configure the top-level `parserOptions` property like this:
+- **Interactive Charts:** Visualize your financial data through interactive charts, providing a clear overview of your financial trends.
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+- **Dark Theme:** FinVista boasts a sophisticated dark theme, ensuring a visually pleasing and comfortable experience during extended usage.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- **Mobile-Only Design (for now):** Due to challenges in finding a suitable design, FinVista is optimized for mobile devices. Desktop design may be added in future updates.
+
+- **Backend with Express and MongoDB:** The application features a robust backend built with Express.js and MongoDB, ensuring efficient data storage and retrieval.
+
+- **Persistent Authentication with Cookies:** FinVista prioritizes security and user convenience by implementing persistent authentication using cookies. Users can enjoy a seamless experience without frequent logins.
+
+## Quick Look
+
+![image](https://github.com/kristiyankiryakov/ExpenseManager/assets/126320553/3f787cec-e677-4d7d-b23a-a28ff30132c8)
+
+![image](https://github.com/kristiyankiryakov/ExpenseManager/assets/126320553/fd9db3d7-7e5e-4f91-83eb-367f40be487d)
+
+![image](https://github.com/kristiyankiryakov/ExpenseManager/assets/126320553/11c6a44f-1677-4cd6-9e3f-d78cd9ef2adb)
+
+![image](https://github.com/kristiyankiryakov/ExpenseManager/assets/126320553/90296ed1-f8cb-4988-a21e-04aef39f8ad6)
+
+
