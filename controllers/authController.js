@@ -18,16 +18,6 @@ const login = asyncHandler(async (req, res) => {
 
     const userData = await User.findOne({ username }).select('-password').exec();
 
-    // const accessToken = jwt.sign(
-    //     {
-    //         "UserInfo": {
-    //             "username": foundUser.username,
-    //             "roles": foundUser.roles
-    //         }
-    //     },
-    //     process.env.ACCESS_TOKEN_SECRET,
-    //     { expiresIn: '1d' }
-    // )
     const refreshToken = jwt.sign(
         {
             "UserInfo": {
@@ -49,7 +39,6 @@ const login = asyncHandler(async (req, res) => {
 
 });
 
-// access token expired
 const refresh = (req, res) => {
     const cookies = req.cookies;
     
