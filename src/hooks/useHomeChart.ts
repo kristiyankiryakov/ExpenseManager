@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {axiosInstance} from "../helpers/axios";
 
 import {DataItem} from "../helpers/chartSettings";
-import {    } from "../enums/Page";
+import {Page} from "../enums/Page";
 import useUserStore from "../stores/userStore";
 
 const months = [

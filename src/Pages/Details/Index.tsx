@@ -16,8 +16,11 @@ export const Index = () => {
 
     const [selectedPeriod, setSelectedPeriod] = useState<Period>(Period.WEEK);
     useTransactions({period: selectedPeriod, type, format: true});
+    
     const {transactions} = transactionStore();
+
     const {chartData, chartPeriod} = useChartDetails({type, period: selectedPeriod});
+
     const sum = useMemo(() => {
         return transactions ? transactions.reduce((a, b) => a + b.amount, 0) : 0;
     }, [transactions]);

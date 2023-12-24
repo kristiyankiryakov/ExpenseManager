@@ -24,7 +24,7 @@ export const Index = () => {
     const {incomeExpenseType: type} = typeStore();
 
     const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
-    const {selectedDate, addTransactionMutation, amount, setAmount, setSelectedDate} = useTransactions({type, period: Period.DAY, userCategories, selectedCategory, setSelectedCategory});
+    const {selectedDate, addTransactionMutation, amount, setAmount, setSelectedDate} = useTransactions({type, period: Period.DAY, setSelectedCategory});
     const {transactions: dailyTransactions} = transactionStore();
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();

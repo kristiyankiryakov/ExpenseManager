@@ -10,7 +10,6 @@ type fetchTransactionParams = {
     userId: string | undefined
     period: Period
     type: Page
-    // format: boolean | undefined
 }
 
 export type AddTransactionType = {
@@ -24,11 +23,6 @@ export type AddTransactionType = {
 export const fetchTransactions = async (params: fetchTransactionParams): Promise<Transaction[] | null> => {
     try {
         const response = await axiosInstance.get(`/transaction`, {params});
-        // if (format) {
-        //     const formatted = formatForChart(response.data.formatted);
-        //     setChartData(formatted);
-        //     setChartPeriod(formatDates(response.data.period.startDate, response.data.period.endDate))
-        // }
         return response.data.transactions;
 
     } catch (err) {

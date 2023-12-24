@@ -3,7 +3,7 @@ import HomeChart from "../Home/HomeChart"
 
 export const Index = () => {
 
-    const user = useUserStore((store) => store.user);
+    const {user} = useUserStore();
 
     return (
         <div className='flex flex-col h-screen justify-between' >
