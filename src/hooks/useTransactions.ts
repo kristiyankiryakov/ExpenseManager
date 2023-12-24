@@ -20,13 +20,13 @@ type Props = {
 }
 
 const useTransactions = ({type, period, setSelectedCategory}: Props) => {
-    const user = useUserStore((state) => state.user);
+    const {user} = useUserStore();
     const queryClient = useQueryClient();
     const {setTransactions} = transactionStore();
     const [amount, setAmount] = useState<null | number>(null);
     const [selectedDate, setSelectedDate] = useState<moment.Moment | Date>(moment());
 
-    const {data: transactions} = useQuery({
+    const {data: transactions, isLoading} = useQuery({
         queryKey: ['transactions', {userId: user?._id, period, type}],
         queryFn: () => fetchTransactions({userId: user?._id, period, type}),
     });
@@ -44,7 +44,7 @@ const useTransactions = ({type, period, setSelectedCategory}: Props) => {
         },
     })
 
-    return {amount, setAmount, setSelectedDate, addTransactionMutation, selectedDate};
+    return {amount, setAmount, setSelectedDate, addTransactionMutation, selectedDate, isLoading};
 }
 
 export default useTransactions;

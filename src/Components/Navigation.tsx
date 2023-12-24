@@ -7,7 +7,7 @@ const Navigation = () => {
     return (
         <nav className="bg-slate-900" >
             <div className={`flex bg-slate-800 p-2 w-full justify-around rounded-t-xl`}>
-                <Link to="/"  ><FontAwesomeIcon icon={faHouse} color="#a3e635" size="2xl" /></Link>
+                <Link to="/"><FontAwesomeIcon icon={faHouse} color="#a3e635" size="2xl" /></Link>
                 <Link to="/add" ><FontAwesomeIcon icon={faCirclePlus} color="#a3e635" size="2xl" /></Link>
                 <Link to="/details" ><FontAwesomeIcon icon={faChartSimple} color="#a3e635" size="2xl" /></Link>
                 <Link to={`/profile`} ><FontAwesomeIcon icon={faUser} color="#a3e635" size="2xl" /></Link>

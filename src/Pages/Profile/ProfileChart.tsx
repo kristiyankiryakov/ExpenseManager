@@ -3,9 +3,14 @@
 import {BarChart} from "@mui/x-charts"
 import {chartSetting, dataset} from "../../helpers/chartSettings";
 import useProfileChart from "../../hooks/useProfileChart";
+import User from "../../interfaces/User";
 
-const ProfileChart = () => {
-    const chart = useProfileChart();
+type Props = {
+    user: User | null
+}
+
+const ProfileChart = ({user}: Props) => {
+    const chart = useProfileChart({user});
 
     return (
         <main className="w-[95%] mx-auto">

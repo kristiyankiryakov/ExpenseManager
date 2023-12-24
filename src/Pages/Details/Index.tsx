@@ -9,6 +9,7 @@ import transactionStore from '../../stores/transactionStore.tsx';
 import typeStore from '../../stores/typeStore.tsx';
 import PageSwitch from '../IncomeExpense/PageSwitch.tsx';
 import SingleTransaction from '../IncomeExpense/SingleTransaction.tsx';
+import {Skeleton} from '@mui/material';
 
 export const Index = () => {
     const {detailsChartType: type} = typeStore();
@@ -16,10 +17,10 @@ export const Index = () => {
 
     const [selectedPeriod, setSelectedPeriod] = useState<Period>(Period.WEEK);
     useTransactions({period: selectedPeriod, type, format: true});
-    
+
     const {transactions} = transactionStore();
 
-    const {chartData, chartPeriod} = useChartDetails({type, period: selectedPeriod});
+    const {chartData, chartPeriod, isLoading} = useChartDetails({type, period: selectedPeriod});
 
     const sum = useMemo(() => {
         return transactions ? transactions.reduce((a, b) => a + b.amount, 0) : 0;
@@ -40,36 +41,37 @@ export const Index = () => {
                     </div>
                     <p className='p-2 text-gray-400' >{chartPeriod}</p>
                     <div className='flex' >
-                        <PieChart
-                            series={[
-                                {
+                        {isLoading ?
+                            <div className='mx-auto w-fit mb-5' ><Skeleton animation="pulse" variant="circular" width={220} height={220} /></div>
+                            :
+                            <PieChart
+                                series={[{
                                     innerRadius: 25,
                                     outerRadius: 120,
                                     paddingAngle: 10,
                                     cornerRadius: 5,
                                     data: chartData ?? dummy,
                                     arcLabel: (item) => getArcLabel(item, sum),
-                                },
-                            ]}
-                            sx={{
-                                [`& .${pieArcLabelClasses.root}`]: {
-                                    fill: 'white',
-                                    fontSize: 14,
-                                    fontFamily: 'Montserrat',
-                                },
-                            }}
-                            {...sizing}
-                            slotProps={{
-                                legend: {
-                                    labelStyle: {
-                                        fontSize: 16,
-                                        fontWeight: 500,
-                                        fontFamily: 'Montserrat',
+                                },]}
+                                sx={{
+                                    [`& .${pieArcLabelClasses.root}`]: {
                                         fill: 'white',
+                                        fontSize: 14,
+                                        fontFamily: 'Montserrat',
                                     },
-                                },
-                            }}
-                        />
+                                }}
+                                {...sizing}
+                                slotProps={{
+                                    legend: {
+                                        labelStyle: {
+                                            fontSize: 16,
+                                            fontWeight: 500,
+                                            fontFamily: 'Montserrat',
+                                            fill: 'white',
+                                        },
+                                    },
+                                }}
+                            />}
                     </div>
                 </section>
 

@@ -1,9 +1,8 @@
 import {Datepicker} from 'flowbite-react';
-import {useState} from "react";
-import {ToastContainer} from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import {Key, useState} from "react";
 import Period from '../../enums/ExpensePeriod.ts';
 import {ComponentPage} from '../../enums/Page.ts';
+import {isCategorySelected} from '../../helpers/CategoryHelpers.ts';
 import {customTheme} from '../../helpers/calendarTheme.ts';
 import {getIcon} from '../../helpers/icons.tsx';
 import useCategories from "../../hooks/useCategories.ts";
@@ -19,13 +18,14 @@ import CurrentDate from './CurrentDate.tsx';
 import FilterCategories from './FilterCategories.tsx';
 import PageSwitch from './PageSwitch.tsx';
 import SingleTransaction from "./SingleTransaction.tsx";
-import {isCategorySelected} from '../../helpers/CategoryHelpers.ts';
+import {Skeleton} from '@mui/material';
+import Transaction from '../../interfaces/Transaction.ts';
 
 export const Index = () => {
     const {incomeExpenseType: type} = typeStore();
 
     const {userCategories, selectedCategoryName, setSelectedCategory, addCategoryMutation} = useCategories();
-    const {selectedDate, addTransactionMutation, amount, setAmount, setSelectedDate} = useTransactions({type, period: Period.DAY, setSelectedCategory});
+    const {selectedDate, addTransactionMutation, amount, setAmount, setSelectedDate, isLoading} = useTransactions({type, period: Period.DAY, setSelectedCategory});
     const {transactions: dailyTransactions} = transactionStore();
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();
@@ -74,14 +74,18 @@ export const Index = () => {
 
                 {/* <p className="text-right text-stone-400 pr-3">{isExpensePage ? 'Daily Expenses:' : 'Daily Income'}</p> */}
 
-                {dailyTransactions && dailyTransactions.map((transaction, i) => {
-                    return <SingleTransaction transaction={transaction} key={i} />;
+                {dailyTransactions && dailyTransactions.map((transaction: Transaction, i: Key | null | undefined) => {
+                    return (isLoading ?
+                        <div className='w-[95%] mx-auto' > <Skeleton sx={{marginLeft: "auto", marginRight: "auto", margin : "0.5rem"}} animation="pulse" variant="rounded" width={350} height={40} /> </div>
+                        :
+                        <SingleTransaction transaction={transaction} key={i} />
+                    );
                 })}
 
             </section>
 
             <CategoryModal openModal={openModal} setOpenModal={setOpenModal} addCategory={addCategoryMutation} userCategories={userCategories} />
-            <ToastContainer />
+
         </main >
     )
 }

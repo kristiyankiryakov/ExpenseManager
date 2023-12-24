@@ -2,13 +2,15 @@
 import {ThemeProvider, createTheme} from '@mui/material/styles';
 import {Outlet, Route, createBrowserRouter, createRoutesFromElements, useLocation} from "react-router-dom";
 import {Index as IncomeExpense} from '../Pages/IncomeExpense/Index';
-import {Index as Home} from '../Pages/Profile/Index';
-import {Index as Details} from '../Pages/Details/Index';
+import {Index as Home} from "../Pages/Home/Index.tsx";
+import {Index as Details} from "../Pages/Details/Index.tsx";
+import {Index as Profile} from "../Pages/Profile/Index.tsx";
 import Login from "../Components/Login";
 import Protected from "../Components/Protected";
 import Register from "../Components/Register";
 import Navigation from '../Components/Navigation';
-import {Index as Profile} from '../Pages/Home/Index';
+import useUserStore from '../stores/userStore';
+import Cookies from 'js-cookie'
 
 const darkTheme = createTheme({
     palette: {
@@ -19,11 +21,12 @@ const darkTheme = createTheme({
 const Root = () => {
     const location = useLocation();
     const isHomePage = location.pathname === '/';
-
+    const {user} = useUserStore();
+    const token = Cookies.get('jwt');
     return (
         <div className={`flex flex-col h-screen justify-between ${isHomePage ? 'bg-cover bg-home-background' : 'bg-slate-900'}`}>
             <Outlet />
-            <Navigation />
+            {(user && token) && < Navigation />}
         </div>
     )
 }

@@ -5,7 +5,9 @@ import {router} from "./routes/routes.tsx";
 import {Flowbite} from 'flowbite-react';
 import 'flowbite';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 
 function App() {
 
@@ -18,7 +20,8 @@ function App() {
           {/* <DarkThemeToggle /> */}
           <RouterProvider router={router} />
         </Flowbite>
-        <ReactQueryDevtools />
+        {/* <ReactQueryDevtools /> */}
+        <ToastContainer />
       </QueryClientProvider>
     </>
   )

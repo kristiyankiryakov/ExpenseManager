@@ -12,12 +12,12 @@ type Props = {
 const useChartDetails = ({type, period}: Props) => {
     const user = useUserStore((state) => state.user);
 
-    const {data} = useQuery({
+    const {data, isLoading} = useQuery({
         queryKey: ['chartData', {userId: user?._id, period, type, format: true}],
         queryFn: () => fetchChartData({userId: user?._id, period, type, format: true}),
     });
 
-    return {chartData : data?.chartData, chartPeriod : data?.chartPeriod};
+    return {chartData : data?.chartData, chartPeriod : data?.chartPeriod, isLoading};
 }
 
 export default useChartDetails

@@ -9,7 +9,7 @@ type Props = {
 }
 
 const Protected = ({children}: Props) => {
-    const {user, reFetchUser} = useUserStore((state) => ({user: state.user, reFetchUser: state.reFetchUser}));
+    const {user, reFetchUser} = useUserStore();
     const token = Cookies.get('jwt');
     const navigate = useNavigate();
 

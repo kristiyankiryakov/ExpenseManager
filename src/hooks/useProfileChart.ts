@@ -1,11 +1,15 @@
 import {useQuery} from "@tanstack/react-query";
 import {useEffect} from "react";
 import {getChart} from "../helpers/ProfileChartHelper";
+import User from "../interfaces/User";
 import chartStore from "../stores/chartStore";
-import useUserStore from "../stores/userStore";
 
-function useHomeChart() {
-    const {user} = useUserStore();
+type Props = {
+    user: User | null
+}
+
+function useHomeChart({user}: Props) {
+
     const {setProfileChart} = chartStore();
 
     const {data: chart} = useQuery({
