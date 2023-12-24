@@ -9,7 +9,7 @@ function useHomeChart() {
     const {setProfileChart} = chartStore();
 
     const {data: chart} = useQuery({
-        queryKey: ['transactions', {userId: user?._id}],
+        queryKey: ['profileChart', {userId: user?._id}],
         queryFn: () => getChart({userId: user?._id}),
     });
 
