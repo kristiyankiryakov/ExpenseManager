@@ -2,14 +2,13 @@
 import {ThemeProvider, createTheme} from '@mui/material/styles';
 import {Outlet, Route, createBrowserRouter, createRoutesFromElements, useLocation} from "react-router-dom";
 import {Index as IncomeExpense} from '../Pages/IncomeExpense/Index';
-import {Index as Home} from '../Pages/Home/Index';
+import {Index as Home} from '../Pages/Profile/Index';
 import {Index as Details} from '../Pages/Details/Index';
 import Login from "../Components/Login";
 import Protected from "../Components/Protected";
 import Register from "../Components/Register";
-// import {UserProvider} from '../context/userContext';
 import Navigation from '../Components/Navigation';
-import {Index as Profile} from '../Pages/Profile/Index';
+import {Index as Profile} from '../Pages/Home/Index';
 
 const darkTheme = createTheme({
     palette: {

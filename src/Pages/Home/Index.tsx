@@ -1,14 +1,28 @@
-// import useUserStore from '../../stores/userStore';
+import useUserStore from "../../stores/userStore"
+import HomeChart from "../Profile/ProfileChart"
 
 export const Index = () => {
 
-    // const user = useUserStore((state) => state.user);
+    const {user} = useUserStore();
 
     return (
-        <div className=' flex flex-col justify-between h-screen text-white' >
-            <div>&nbsp;</div>
+        <div className='flex flex-col h-screen justify-between' >
+            <section>
+                <p className="text-lime-500 text-center font-bold text-2xl pt-3" >Personal Details</p>
 
-            <p className='pb-20 pl-3 text-white text-2xl font-bold' >WELCOME TO THE FUTURE OF TRACKING</p>
+                <div className="pt-3" >
+                    <div className="pl-5" >
+                        <label htmlFor="first_name" className="block mb-2 text-md font-medium text-lime-500 ">Username</label>
+                        <div className="w-8/12 " >
+                            <input value={user?.username} type="text" id="first_name" className="bg-gray-50 border disabled border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-lime-500 focus:border-lime-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-lime-500 dark:focus:border-lime-500" required />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div className="pb-3">
+                <HomeChart />
+            </div>
         </div>
     )
 }
+

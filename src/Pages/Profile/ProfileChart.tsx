@@ -2,10 +2,10 @@
 // import {AiOutlineDownload, AiOutlineUpload} from "react-icons/ai";
 import {BarChart} from "@mui/x-charts"
 import {chartSetting, dataset} from "../../helpers/chartSettings";
-import useHomeChart from "../../hooks/useHomeChart";
+import useProfileChart from "../../hooks/useProfileChart";
 
-const HomeChart = () => {
-    const chart = useHomeChart(dataset);
+const ProfileChart = () => {
+    const chart = useProfileChart();
 
     return (
         <main className="w-[95%] mx-auto">
@@ -34,4 +34,4 @@ const HomeChart = () => {
     )
 }
 
-export default HomeChart 
+export default ProfileChart 
