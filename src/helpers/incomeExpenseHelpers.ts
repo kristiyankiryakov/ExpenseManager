@@ -15,7 +15,7 @@ type fetchTransactionParams = {
 export type AddTransactionType = {
     type: Page
     amount: number | null
-    category: string | null | undefined
+    category: string | undefined | false
     user: User | null
     date: Date | moment.Moment
 }
@@ -39,9 +39,9 @@ export const addTransaction = async ({user, category, type, amount, date}: AddTr
             autoClose: 1500,
             toastId: "add-amount"
         });
-       throw new Error('Invalid transaction amount');
+        throw new Error('Invalid transaction amount');
     }
-
+   
     if (!category) {
         toast.warn("Please select category", {
             position: toast.POSITION.TOP_RIGHT,

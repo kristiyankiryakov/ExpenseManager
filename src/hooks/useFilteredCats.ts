@@ -3,7 +3,7 @@ import Category from "../interfaces/Category";
 
 
 type Props = {
-    userCategories: Category[] | null
+    userCategories: Category[] | undefined
     filter: string
 }
 

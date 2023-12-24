@@ -1,7 +1,6 @@
 import {UseMutateAsyncFunction} from "@tanstack/react-query"
 import moment from "moment"
 import {AddTransactionType} from "../../helpers/incomeExpenseHelpers"
-import useCategories from "../../hooks/useCategories"
 import typeStore from "../../stores/typeStore"
 import useUserStore from "../../stores/userStore"
 
@@ -9,28 +8,22 @@ type Props = {
     addTransaction: UseMutateAsyncFunction<void, Error, AddTransactionType, unknown>
     amount: number | null
     date: Date | moment.Moment
+    selectedCategoryName: string | undefined | false
 }
 
-const AddTransaction = ({addTransaction, amount, date}: Props) => {
+const AddTransaction = ({addTransaction, amount, date, selectedCategoryName}: Props) => {
     const {user} = useUserStore();
-    const {userCategories, selectedCategory} = useCategories();
-    const type = typeStore((state) => state.incomeExpenseType);
-    const categoryName = (userCategories && selectedCategory) ? userCategories[selectedCategory].name : null;
+
+    const {incomeExpenseType: type} = typeStore();
+
+    const props = {type, category: selectedCategoryName, amount, user, date}
 
     const handleTransaction = async () => {
         try {
             await addTransaction(props);
         } catch (err) {
-            console.log(err);
+            console.error('Error handling transaction', err);
         }
-    }
-
-    const props = {
-        type,
-        category: categoryName,
-        amount,
-        user,
-        date
     }
 
     return (

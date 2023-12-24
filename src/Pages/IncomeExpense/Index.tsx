@@ -9,6 +9,7 @@ import {getIcon} from '../../helpers/icons.tsx';
 import useCategories from "../../hooks/useCategories.ts";
 import useFilteredCats from '../../hooks/useFilteredCats.ts';
 import useTransactions from "../../hooks/useTransactions.ts";
+import transactionStore from '../../stores/transactionStore.tsx';
 import typeStore from '../../stores/typeStore.tsx';
 import AddTransaction from './AddTransaction.tsx';
 import Amount from './Amount.tsx';
@@ -18,12 +19,12 @@ import CurrentDate from './CurrentDate.tsx';
 import FilterCategories from './FilterCategories.tsx';
 import PageSwitch from './PageSwitch.tsx';
 import SingleTransaction from "./SingleTransaction.tsx";
-import transactionStore from '../../stores/transactionStore.tsx';
+import {isCategorySelected} from '../../helpers/CategoryHelpers.ts';
 
 export const Index = () => {
     const {incomeExpenseType: type} = typeStore();
 
-    const {userCategories, selectCategory, selectedCategory, setSelectedCategory, addCategory, setNewCategory} = useCategories();
+    const {userCategories, selectedCategoryName, setSelectedCategory, addCategoryMutation} = useCategories();
     const {selectedDate, addTransactionMutation, amount, setAmount, setSelectedDate} = useTransactions({type, period: Period.DAY, setSelectedCategory});
     const {transactions: dailyTransactions} = transactionStore();
     const [filter, setFilter] = useState("");
@@ -45,11 +46,11 @@ export const Index = () => {
                 <div className="grid grid-cols-4 w-[95%] m-auto border border-gray-600 rounded-xl bg-slate-800 h-44 overflow-y-auto scroll-smooth" >
                     {filteredCats && filteredCats.map((category, i) => {
                         return (
-                            <div onClick={() => selectCategory(i)} id="2344" key={category.name} className="flex-col space-y-1 justify-center items-center my-2" >
+                            <div onClick={() => setSelectedCategory(i)} id="2344" key={category.name} className="flex-col space-y-1 justify-center items-center my-2" >
                                 <div tabIndex={0} className={`p-2 rounded-lg w-fit m-auto bg-lime-500 focus:ring-2 focus:outline-none focus:ring-lime-300`} >
                                     <span>{getIcon(category.name)}</span>
                                 </div>
-                                <div className={`bg-lime-700 w-fit rounded-lg px-2 m-auto ${selectedCategory == i && 'bg-lime-500 shadow-md shadow-lime-300'}`} >
+                                <div className={`bg-lime-700 w-fit rounded-lg px-2 m-auto ${isCategorySelected(selectedCategoryName, category.name) && 'bg-lime-500 shadow-md shadow-lime-300'}`} >
                                     <p className="text-center text-gray-300" >{category.name}</p>
                                 </div>
                             </div>
@@ -63,7 +64,7 @@ export const Index = () => {
                 <Datepicker theme={customTheme} autoHide onSelectedDateChanged={(d) => setSelectedDate(d)} />
             </section>
 
-            <AddTransaction date={selectedDate} amount={amount} addTransaction={addTransactionMutation} />
+            <AddTransaction selectedCategoryName={selectedCategoryName} date={selectedDate} amount={amount} addTransaction={addTransactionMutation} />
 
             <section className={`mb-4 w-full mx-auto h-60 max-h-80 overflow-y-auto`} >
                 <div className='flex items-center justify-between w-[90%] mx-auto text-gray-500' >
@@ -79,7 +80,7 @@ export const Index = () => {
 
             </section>
 
-            <CategoryModal openModal={openModal} setOpenModal={setOpenModal} addCategory={addCategory} setNewCategory={setNewCategory} />
+            <CategoryModal openModal={openModal} setOpenModal={setOpenModal} addCategory={addCategoryMutation} userCategories={userCategories} />
             <ToastContainer />
         </main >
     )
