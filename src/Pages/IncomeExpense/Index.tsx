@@ -1,4 +1,6 @@
+import {Skeleton} from '@mui/material';
 import {Datepicker} from 'flowbite-react';
+import moment from 'moment';
 import {Key, useState} from "react";
 import Period from '../../enums/ExpensePeriod.ts';
 import {ComponentPage} from '../../enums/Page.ts';
@@ -8,6 +10,7 @@ import {getIcon} from '../../helpers/icons.tsx';
 import useCategories from "../../hooks/useCategories.ts";
 import useFilteredCats from '../../hooks/useFilteredCats.ts';
 import useTransactions from "../../hooks/useTransactions.ts";
+import Transaction from '../../interfaces/Transaction.ts';
 import transactionStore from '../../stores/transactionStore.tsx';
 import typeStore from '../../stores/typeStore.tsx';
 import AddTransaction from './AddTransaction.tsx';
@@ -18,14 +21,12 @@ import CurrentDate from './CurrentDate.tsx';
 import FilterCategories from './FilterCategories.tsx';
 import PageSwitch from './PageSwitch.tsx';
 import SingleTransaction from "./SingleTransaction.tsx";
-import {Skeleton} from '@mui/material';
-import Transaction from '../../interfaces/Transaction.ts';
 
 export const Index = () => {
     const {incomeExpenseType: type} = typeStore();
-
+    const [selectedDate, setSelectedDate] = useState<moment.Moment | Date>(moment());
     const {userCategories, selectedCategoryName, setSelectedCategory, addCategoryMutation} = useCategories();
-    const {selectedDate, addTransactionMutation, amount, setAmount, setSelectedDate, isLoading} = useTransactions({type, period: Period.DAY, setSelectedCategory});
+    const {addTransactionMutation, amount, setAmount, isLoading} = useTransactions({type, period: Period.DAY, setSelectedCategory});
     const {transactions: dailyTransactions} = transactionStore();
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();
@@ -61,7 +62,7 @@ export const Index = () => {
             </div>
 
             <section className="w-[95%] my-2 mx-auto" >
-                <Datepicker theme={customTheme} autoHide onSelectedDateChanged={(d) => setSelectedDate(d)} />
+                <Datepicker theme={customTheme} autoHide onSelectedDateChanged={(d) => setSelectedDate(moment(d))} />
             </section>
 
             <AddTransaction selectedCategoryName={selectedCategoryName} date={selectedDate} amount={amount} addTransaction={addTransactionMutation} />
@@ -76,7 +77,7 @@ export const Index = () => {
 
                 {dailyTransactions && dailyTransactions.map((transaction: Transaction, i: Key | null | undefined) => {
                     return (isLoading ?
-                        <div className='w-[95%] mx-auto' > <Skeleton sx={{marginLeft: "auto", marginRight: "auto", margin : "0.5rem"}} animation="pulse" variant="rounded" width={350} height={40} /> </div>
+                        <div className='w-[95%] mx-auto' > <Skeleton sx={{marginLeft: "auto", marginRight: "auto", margin: "0.5rem"}} animation="pulse" variant="rounded" width={350} height={40} /> </div>
                         :
                         <SingleTransaction transaction={transaction} key={i} />
                     );

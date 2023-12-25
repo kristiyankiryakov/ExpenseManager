@@ -1,10 +1,7 @@
 import {useEffect, useState} from "react";
-// import Transaction from "../interfaces/Transaction";
-import moment from "moment";
 import Period from "../enums/ExpensePeriod";
 import {Page} from "../enums/Page";
 import Category from "../interfaces/Category";
-// import {chartItem, formatDates, formatForChart} from "../helpers/DeitalsPageHelper";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {addTransaction, fetchTransactions} from "../helpers/incomeExpenseHelpers";
 import transactionStore from "../stores/transactionStore";
@@ -24,7 +21,7 @@ const useTransactions = ({type, period, setSelectedCategory}: Props) => {
     const queryClient = useQueryClient();
     const {setTransactions} = transactionStore();
     const [amount, setAmount] = useState<null | number>(null);
-    const [selectedDate, setSelectedDate] = useState<moment.Moment | Date>(moment());
+
 
     const {data: transactions, isLoading} = useQuery({
         queryKey: ['transactions', {userId: user?._id, period, type}],
@@ -44,7 +41,7 @@ const useTransactions = ({type, period, setSelectedCategory}: Props) => {
         },
     })
 
-    return {amount, setAmount, setSelectedDate, addTransactionMutation, selectedDate, isLoading};
+    return {amount, setAmount, addTransactionMutation, isLoading};
 }
 
 export default useTransactions;

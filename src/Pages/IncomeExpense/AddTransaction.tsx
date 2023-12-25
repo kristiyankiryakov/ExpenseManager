@@ -13,9 +13,7 @@ type Props = {
 
 const AddTransaction = ({addTransaction, amount, date, selectedCategoryName}: Props) => {
     const {user} = useUserStore();
-
     const {incomeExpenseType: type} = typeStore();
-
     const props = {type, category: selectedCategoryName, amount, user, date}
 
     const handleTransaction = async () => {

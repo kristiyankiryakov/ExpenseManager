@@ -41,7 +41,7 @@ export const addTransaction = async ({user, category, type, amount, date}: AddTr
         });
         throw new Error('Invalid transaction amount');
     }
-   
+
     if (!category) {
         toast.warn("Please select category", {
             position: toast.POSITION.TOP_RIGHT,
@@ -51,9 +51,8 @@ export const addTransaction = async ({user, category, type, amount, date}: AddTr
         });
         throw new Error('Invalid transaction category');
     }
-    const formatted = moment(date);
 
-    const payload = {user, date: formatted, amount, category, type}
+    const payload = {user, date, amount, category, type}
     await axiosInstance.post('/transaction', payload);
 
     toast.success("Transaction added successfully!", {

@@ -38,14 +38,18 @@ const getUserTransactions = asyncHandler(async (req, res) => {
   if (period === 'day') {
     startDate.setDate(startDate.getDate() - 1);
   } else if (period === 'week') {
-
     const currentDay = currentDate.getDay(); // 0 for Sunday, 1 for Monday, and so on
-    const diffToMonday = currentDate.getDate() - currentDay + (currentDay === 0 ? -6 : 1); // Calculate days to Monday
+    const daysToMonday = currentDay === 0 ? 6 : currentDay - 1; // Calculate days to Monday
 
-    startDate = new Date(currentDate.setDate(diffToMonday));
+    startDate = new Date(currentDate);
+    startDate.setDate(currentDate.getDate() - daysToMonday);
+    startDate.setUTCHours(0, 0, 0, 0);
+
     endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 6); // Sunday
 
+    // Ensure the endDate represents the Sunday of the current week
+    endDate.setDate(startDate.getDate() + 5);
+    endDate.setUTCHours(23, 59, 59, 999);
   } else if (period === 'month') {
     startDate.setDate(1); // Set the start date to the 1st day of the current month
 
@@ -75,6 +79,7 @@ const getUserTransactions = asyncHandler(async (req, res) => {
       type: type,
       date: { $gte: startDate, $lte: endDate ?? currentDate }, // Filter expenses within the specified period
     });
+    console.log(transactions);
     const response = { transactions, period }
 
     if (format) {
