@@ -79,7 +79,7 @@ const getUserTransactions = asyncHandler(async (req, res) => {
       type: type,
       date: { $gte: startDate, $lte: endDate ?? currentDate }, // Filter expenses within the specified period
     });
-    console.log(transactions);
+   
     const response = { transactions, period }
 
     if (format) {
