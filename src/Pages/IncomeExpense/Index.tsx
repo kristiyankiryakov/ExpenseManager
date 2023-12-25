@@ -62,7 +62,13 @@ export const Index = () => {
             </div>
 
             <section className="w-[95%] my-2 mx-auto" >
-                <Datepicker theme={customTheme} autoHide onSelectedDateChanged={(d) => setSelectedDate(moment(d))} />
+                <Datepicker theme={customTheme} autoHide onSelectedDateChanged={(d) => {
+                    const temp = moment(d);
+                    if (temp.date() == 1) {
+                        temp.add(1, 'day');
+                    }
+                    setSelectedDate(temp)
+                }} />
             </section>
 
             <AddTransaction selectedCategoryName={selectedCategoryName} date={selectedDate} amount={amount} addTransaction={addTransactionMutation} />

@@ -32,6 +32,7 @@ export const fetchTransactions = async (params: fetchTransactionParams): Promise
 }
 
 export const addTransaction = async ({user, category, type, amount, date}: AddTransactionType) => {
+    
     if (!amount || amount <= 0) {
         toast.warn("Please enter amount more than 0", {
             position: toast.POSITION.TOP_RIGHT,
