@@ -1,10 +1,10 @@
-import Page from "../enums/Page.ts";
+import { Page } from "../enums/Page.ts";
 import User from "./User.ts";
 
 export default interface Transaction {
     user: User,
     description?: string,
-    type : Page,
+    type: Page,
     amount: number,
     date: string,
     category: string,

@@ -1,7 +1,7 @@
-import {useNavigate} from "react-router-dom"
-import {useState} from "react";
-import axios from "axios";
-import {toast} from "react-toastify";
+import { useNavigate } from "react-router-dom"
+import { useState } from "react";
+import axios, { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 const Register = () => {
 
@@ -25,12 +25,15 @@ const Register = () => {
                 navigate('/login');
             }
         } catch (err) {
-            toast.error(err.response.data.message, {
-                position: toast.POSITION.TOP_RIGHT,
-                theme: "dark",
-                autoClose: 2000,
-                toastId: "register-succ"
-            });
+            if (err instanceof (AxiosError)) {
+                toast.error(err && err.response && err.response.data.message, {
+                    position: toast.POSITION.TOP_RIGHT,
+                    theme: "dark",
+                    autoClose: 2000,
+                    toastId: "register-succ"
+                });
+            }
+
         }
     }
     return (
@@ -47,11 +50,11 @@ const Register = () => {
                         </h1>
                         <div>
                             <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-                            <input value={userData.username} onChange={(e) => setUserData(prev => ({...prev, username: e.target.value}))} type="text" name="username" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-lime-600 focus:border-lime-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-lime-500 dark:focus:border-lime-500" placeholder="Ilonka" required />
+                            <input value={userData.username} onChange={(e) => setUserData(prev => ({ ...prev, username: e.target.value }))} type="text" name="username" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-lime-600 focus:border-lime-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-lime-500 dark:focus:border-lime-500" placeholder="Ilonka" required />
                         </div>
                         <div>
                             <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                            <input value={userData.password} onChange={(e) => setUserData(prev => ({...prev, password: e.target.value}))} type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-lime-600 focus:border-lime-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-lime-500 dark:focus:border-lime-500" required />
+                            <input value={userData.password} onChange={(e) => setUserData(prev => ({ ...prev, password: e.target.value }))} type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-lime-600 focus:border-lime-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-lime-500 dark:focus:border-lime-500" required />
                         </div>
                         {/* <div className="flex items-start">
                             <div className="flex items-center h-5">

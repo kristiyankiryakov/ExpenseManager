@@ -52,14 +52,6 @@ export const formatForChart = (data: {[key: string]: number}) => {
 export const SelectedBkg = 'bg-lime-400 shadow-lg shadow-lime-500/50';
 export const DeSelectedBkg = 'bg-lime-800 bg-opacity-60 shadow-lg';
 
-export const sizing = {
-    height: 250,
-    legend: {
-        direction: "column",
-        position: {vertical: 'top', horizontal: "right"},
-        padding: NaN,
-    }
-};
 
 export const Color: {[key: string]: string} = {
     Food: "#b9d04c",

@@ -2,7 +2,7 @@ import {PieChart, pieArcLabelClasses} from '@mui/x-charts/PieChart';
 import {useMemo, useState} from 'react';
 import Period from '../../enums/ExpensePeriod';
 import {ComponentPage, Page} from '../../enums/Page.ts';
-import {DeSelectedBkg, SelectedBkg, dummy, getArcLabel, sizing} from '../../helpers/ChartDetailsHelper.ts';
+import {DeSelectedBkg, SelectedBkg, dummy, getArcLabel} from '../../helpers/ChartDetailsHelper.ts';
 import useChartDetails from '../../hooks/useChartDetails.ts';
 import useTransactions from '../../hooks/useTransactions.ts';
 import transactionStore from '../../stores/transactionStore.tsx';
@@ -60,7 +60,7 @@ export const Index = () => {
                                         fontFamily: 'Montserrat',
                                     },
                                 }}
-                                {...sizing}
+                                height={250}
                                 slotProps={{
                                     legend: {
                                         labelStyle: {
