@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3500',
+  baseURL: 'https://expense-manager-ivory.vercel.app/',
   withCredentials: true,
 });
 
