@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
-  baseURL: 'https://expense-manager-ivory.vercel.app/',
+  baseURL: 'https://backend-express-manager.vercel.app',
   withCredentials: true,
 });
 
