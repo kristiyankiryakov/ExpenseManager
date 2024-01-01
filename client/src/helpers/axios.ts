@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
-  baseURL: 'https://backend-express-manager.vercel.app',
+  baseURL: 'http://localhost:3500',
   withCredentials: true,
 });
 

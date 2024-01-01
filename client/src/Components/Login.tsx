@@ -1,10 +1,10 @@
 import {useState} from "react";
-import axios from "axios";
 import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
 import {setAuthorizationToken} from "../helpers/axios";
 import useUserStore from "../stores/userStore";
 import {toast} from "react-toastify";
+import { axiosInstance } from "../helpers/axios";
 
 const Login = () => {
     const setUser = useUserStore((state) => state.setUser);
@@ -12,7 +12,7 @@ const Login = () => {
     const navigate = useNavigate();
     const login = async () => {
         try {
-            const result = await axios.post('http://localhost:3500/auth', userData)
+            const result = await axiosInstance.post('/auth', userData)
             const token = result.data.refreshToken;
             setAuthorizationToken(token);
             Cookies.set('jwt', token);

@@ -1,15 +1,15 @@
 /* eslint-disable react-refresh/only-export-components */
 import {ThemeProvider, createTheme} from '@mui/material/styles';
 import {Outlet, Route, createBrowserRouter, createRoutesFromElements, useLocation} from "react-router-dom";
-import {Index as IncomeExpense} from '../Pages/IncomeExpense/Index';
+import {Index as IncomeExpense} from '../Pages/IncomeExpense/Index.tsx';
 import {Index as Home} from "../Pages/Home/Index.tsx";
 import {Index as Details} from "../Pages/Details/Index.tsx";
 import {Index as Profile} from "../Pages/Profile/Index.tsx";
-import Login from "../Components/Login";
-import Protected from "../Components/Protected";
-import Register from "../Components/Register";
-import Navigation from '../Components/Navigation';
-import useUserStore from '../stores/userStore';
+import Login from "../Components/Login.tsx";
+import Protected from "../Components/Protected.tsx";
+import Register from "../Components/Register.tsx";
+import Navigation from '../Components/Navigation.tsx';
+import useUserStore from '../stores/userStore.tsx';
 import Cookies from 'js-cookie'
 
 const darkTheme = createTheme({

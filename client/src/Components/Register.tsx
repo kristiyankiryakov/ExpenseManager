@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom"
 import { useState } from "react";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import { axiosInstance } from "../helpers/axios";
 
 const Register = () => {
 
@@ -13,7 +14,7 @@ const Register = () => {
     });
     const register = async () => {
         try {
-            const response = await axios.post('http://localhost:3500/users', userData)
+            const response = await axiosInstance.post('/users', userData)
 
             if (response.status === 201) {
                 toast.success(response.data.message, {

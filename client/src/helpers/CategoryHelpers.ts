@@ -1,4 +1,4 @@
-import {axiosInstance} from "../helpers/axios";
+import {axiosInstance} from "./axios";
 import Category from "../interfaces/Category";
 import User from "../interfaces/User";
 

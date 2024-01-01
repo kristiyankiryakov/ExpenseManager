@@ -1,6 +1,6 @@
 import {PieChart, pieArcLabelClasses} from '@mui/x-charts/PieChart';
 import {useMemo, useState} from 'react';
-import Period from '../../enums/ExpensePeriod';
+import Period from '../../enums/ExpensePeriod.ts';
 import {ComponentPage, Page} from '../../enums/Page.ts';
 import {DeSelectedBkg, SelectedBkg, dummy, getArcLabel} from '../../helpers/ChartDetailsHelper.ts';
 import useChartDetails from '../../hooks/useChartDetails.ts';
