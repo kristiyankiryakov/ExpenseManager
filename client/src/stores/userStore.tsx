@@ -22,7 +22,7 @@ const useUserStore = create<UserStore>()((set) => ({
 
     reFetchUser: async (token) => {
         try {
-            const result = await axios.get('http://localhost:3500/auth/refresh', {headers: {'Authorization': `Bearer ${token}`}, withCredentials: true});
+            const result = await axios.get('https://expense-manager-server.vercel.app/auth/refresh', {headers: {'Authorization': `Bearer ${token}`}, withCredentials: true});
             set({user: result.data.userData});
         } catch (err) {
             console.log(err);
