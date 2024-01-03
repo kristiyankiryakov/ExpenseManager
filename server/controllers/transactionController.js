@@ -79,7 +79,7 @@ const getUserTransactions = asyncHandler(async (req, res) => {
       type: type,
       date: { $gte: startDate, $lte: endDate ?? currentDate }, // Filter expenses within the specified period
     });
-   
+
     const response = { transactions, period }
 
     if (format) {
@@ -117,7 +117,12 @@ const getYearlyTransactionsByMonth = asyncHandler(async (req, res) => {
       },
       {
         $group: {
-          _id: { $month: "$date" },
+          _id: {
+            $month: {
+              date: "$date",
+              timezone: 'Europe/Sofia'
+            }
+          },
           totalAmount: { $sum: "$amount" }
         }
       }
