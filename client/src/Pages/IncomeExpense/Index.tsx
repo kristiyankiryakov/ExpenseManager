@@ -1,12 +1,12 @@
-import {Skeleton} from '@mui/material';
-import {Datepicker} from 'flowbite-react';
+import { Skeleton } from '@mui/material';
+import { Datepicker } from 'flowbite-react';
 import moment from 'moment';
-import {Key, useState} from "react";
+import { Key, useState } from "react";
 import Period from '../../enums/ExpensePeriod.ts';
-import {ComponentPage} from '../../enums/Page.ts';
-import {isCategorySelected} from '../../helpers/CategoryHelpers.ts';
-import {customTheme} from '../../helpers/calendarTheme.ts';
-import {getIcon} from '../../helpers/icons.tsx';
+import { ComponentPage } from '../../enums/Page.ts';
+import { isCategorySelected } from '../../helpers/CategoryHelpers.ts';
+import { customTheme } from '../../helpers/calendarTheme.ts';
+import { getIcon } from '../../helpers/icons.tsx';
 import useCategories from "../../hooks/useCategories.ts";
 import useFilteredCats from '../../hooks/useFilteredCats.ts';
 import useTransactions from "../../hooks/useTransactions.ts";
@@ -23,14 +23,14 @@ import PageSwitch from './PageSwitch.tsx';
 import SingleTransaction from "./SingleTransaction.tsx";
 
 export const Index = () => {
-    const {incomeExpenseType: type} = typeStore();
+    const { incomeExpenseType: type } = typeStore();
     const [selectedDate, setSelectedDate] = useState<moment.Moment | Date>(moment());
-    const {userCategories, selectedCategoryName, setSelectedCategory, addCategoryMutation} = useCategories();
-    const {addTransactionMutation, amount, setAmount, isLoading} = useTransactions({type, period: Period.DAY, setSelectedCategory});
-    const {transactions: dailyTransactions} = transactionStore();
+    const { userCategories, selectedCategoryName, setSelectedCategory, addCategoryMutation } = useCategories();
+    const { addTransactionMutation, amount, setAmount, isLoading } = useTransactions({ type, period: Period.DAY, setSelectedCategory });
+    const { transactions: dailyTransactions } = transactionStore();
     const [filter, setFilter] = useState("");
     const [openModal, setOpenModal] = useState<string | undefined>();
-    const filteredCats = useFilteredCats({userCategories, filter});
+    const filteredCats = useFilteredCats({ userCategories, filter });
 
     return (
         <main className="bg-slate-900 flex flex-col h-screen justify-between">;
@@ -63,11 +63,9 @@ export const Index = () => {
 
             <section className="w-[95%] my-2 mx-auto" >
                 <Datepicker theme={customTheme} autoHide onSelectedDateChanged={(d) => {
-                    const temp = moment(d);
-                    if (temp.date() == 1) {
-                        temp.add(1, 'day');
-                    }
-                    setSelectedDate(temp)
+                    console.log(d)
+                
+                    setSelectedDate(d)
                 }} />
             </section>
 
@@ -83,7 +81,7 @@ export const Index = () => {
 
                 {dailyTransactions && dailyTransactions.map((transaction: Transaction, i: Key | null | undefined) => {
                     return (isLoading ?
-                        <div className='w-[95%] mx-auto' > <Skeleton sx={{marginLeft: "auto", marginRight: "auto", margin: "0.5rem"}} animation="pulse" variant="rounded" width={350} height={40} /> </div>
+                        <div className='w-[95%] mx-auto' > <Skeleton sx={{ marginLeft: "auto", marginRight: "auto", margin: "0.5rem" }} animation="pulse" variant="rounded" width={350} height={40} /> </div>
                         :
                         <SingleTransaction transaction={transaction} key={i} />
                     );

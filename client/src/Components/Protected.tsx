@@ -1,25 +1,21 @@
 import Cookies from 'js-cookie'
-import {useNavigate} from 'react-router-dom'
-import Login from './Login'
-// import axios from 'axios'
 import useUserStore from '../stores/userStore'
+import { Navigate } from "react-router-dom";
 
 type Props = {
     children: JSX.Element
 }
 
-const Protected = ({children}: Props) => {
-    const {user, reFetchUser} = useUserStore();
+const Protected = ({ children }: Props) => {
+    const { user, reFetchUser } = useUserStore();
     const token = Cookies.get('jwt');
-    const navigate = useNavigate();
 
     if (token && user) {
         return children
     } else if (token) {
-        reFetchUser(token)
+        reFetchUser();
     } else {
-        navigate('/login');
-        return <Login />
+        return <Navigate to="/login" replace={true} />
     }
 
 };

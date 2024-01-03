@@ -1,5 +1,6 @@
-import axios from 'axios'
-import {create} from 'zustand'
+import { create } from 'zustand'
+import Cookies from 'js-cookie'
+import { axiosInstance } from '../helpers/axios'
 
 type User = {
     active: boolean,
@@ -12,20 +13,21 @@ type User = {
 type UserStore = {
     user: User | null
     setUser: (user: User) => void
-    reFetchUser: (token: string) => void
+    reFetchUser: () => void
 }
 
 const useUserStore = create<UserStore>()((set) => ({
     user: null,
 
-    setUser: (user: User) => set(() => ({user: user})),
+    setUser: (user: User) => set(() => ({ user: user })),
 
-    reFetchUser: async (token) => {
+    reFetchUser: async () => {
         try {
-            const result = await axios.get('https://expense-manager-server.vercel.app/auth/refresh', {headers: {'Authorization': `Bearer ${token}`}, withCredentials: true});
-            set({user: result.data.userData});
+            const result = await axiosInstance.get('/auth/refresh')
+            set({ user: result.data.userData });
         } catch (err) {
-            console.log(err);
+            Cookies.remove('jwt');
+            set({ user: null });
         }
     },
 }));
